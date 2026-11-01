@@ -18,6 +18,7 @@ import { navigate, profileUrl } from '@/lib/router';
 import { HANDLE_RE, fetchMyProfile, profileErrorMessage, saveMyProfile, suggestHandle, syncDisplayName } from '../community/api';
 import { shareProfile } from '../community/PublicProfilePage';
 import { authErrorMessage, displayName } from '@/auth/AuthProvider';
+import { reserveUsername } from '@/auth/usernames';
 
 const item = {
   hidden: { opacity: 0, y: 12 },
@@ -52,6 +53,9 @@ function UsernameSection({ user }) {
     const username = value.trim();
     if (!username) return toast.error('Le pseudo ne peut pas être vide.');
     setBusy(true);
+    // Reserve first: fails if another player already has this pseudo
+    const taken = await reserveUsername(username);
+    if (taken) { setBusy(false); return toast.error(taken); }
     const { error } = await supabase.auth.updateUser({ data: { username } });
     setBusy(false);
     if (error) return toast.error(authErrorMessage(error));
@@ -63,7 +67,7 @@ function UsernameSection({ user }) {
     <Section
       icon={UserRound}
       title="Pseudo"
-      description="Le nom affiché dans le menu du compte."
+      description="Le nom affiché dans le menu du compte. Chaque pseudo est unique (« Ghost » et « ghost » comptent comme le même)."
       onSubmit={submit}
       footer={
         <Button type="submit" disabled={busy || value.trim() === current || !value.trim()}>

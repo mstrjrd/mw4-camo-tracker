@@ -52,6 +52,9 @@ export function authErrorMessage(error) {
   const map = [
     [/invalid login credentials/i, 'Email ou mot de passe incorrect.'],
     [/user already registered/i, 'Un compte existe déjà avec cet email.'],
+    [/already been registered|email_exists|email address.*already/i, 'Cette adresse email est déjà utilisée par un autre compte.'],
+    // Signup trigger of supabase/usernames.sql failed: the pseudo was taken in the meantime
+    [/database error saving new user/i, 'Ce pseudo est déjà pris, choisis-en un autre.'],
     [/email not confirmed/i, 'Confirme ton adresse email avant de te connecter (vérifie ta boîte mail).'],
     [/password should be at least/i, 'Le mot de passe doit contenir au moins 6 caractères.'],
     [/unable to validate email|invalid email/i, 'Adresse email invalide.'],

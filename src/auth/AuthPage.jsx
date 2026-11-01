@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { supabase, redirectUrl } from '@/lib/supabase';
 import { authErrorMessage, useAuth } from './AuthProvider';
+import { checkUsername } from './usernames';
 
 function Field({ id, label, ...props }) {
   return (
@@ -121,10 +122,13 @@ function SignupForm() {
     const username = String(f.get('username')).trim();
     const email = String(f.get('email')).trim();
     const password = String(f.get('password'));
+    if (!username) return setError('Choisis un pseudo.');
     if (password !== String(f.get('confirm'))) return setError('Les deux mots de passe ne correspondent pas.');
     if (password.length < 6) return setError('Le mot de passe doit contenir au moins 6 caractères.');
 
     setBusy(true); setError('');
+    const taken = await checkUsername(username);
+    if (taken) { setBusy(false); return setError(taken); }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -132,6 +136,8 @@ function SignupForm() {
     });
     setBusy(false);
     if (error) return setError(authErrorMessage(error));
+    // With email confirmation on, Supabase hides existing emails: it returns a fake user with no identity
+    if (data.user && data.user.identities?.length === 0) return setError('Un compte existe déjà avec cet email.');
     // No session = email confirmation is enabled on the project
     if (!data.session) setSentTo(email);
     else toast.success(`Bienvenue ${username} !`);
