@@ -1,0 +1,1309 @@
+{
+ "categories": [
+  {
+   "name": "Fusil d'assaut",
+   "weapons": [
+    {
+     "id": "han-86",
+     "name": "Han 86",
+     "level": 1,
+     "multi": [
+      "Faites 20 éliminations de joueurs en prenant appui.",
+      "Éliminez 50 joueur(s) en utilisant un silencieux.",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis en prenant appui.",
+      "Éliminez 125 ennemi(s) en utilisant un silencieux.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "m4",
+     "name": "M4",
+     "level": 14,
+     "multi": [
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 20 joueur(s) à bout portant.",
+      "Éliminez 20 joueurs en prenant appui.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Faites 75 éliminations d'ennemis en prenant appui.",
+      "Éliminez 100 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "hyeon-burst",
+     "name": "Hyeon Burst",
+     "level": 21,
+     "multi": [
+      "Éliminez 10 fois 2 joueurs sans recharger.",
+      "Éliminez 100 joueur(s) en utilisant un silencieux.",
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 250 joueur(s) en utilisant un silencieux.",
+      "Éliminez 30 fois 2 ennemis sans recharger.",
+      "Éliminez 75 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "patriot-xmr",
+     "name": "Patriot XMR",
+     "level": 27,
+     "multi": [
+      "Éliminez 20 joueur(s) en tirant au jugé.",
+      "Éliminez 50 joueur(s) en utilisant un silencieux.",
+      "Éliminez 30 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) au tir au jugé.",
+      "Éliminez 125 ennemi(s) en utilisant un silencieux.",
+      "Éliminez 100 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "kastov-762",
+     "name": "Kastov 762",
+     "level": 34,
+     "multi": [
+      "Faites 3 éliminations sans mourir 10 fois.",
+      "Éliminez 30 joueur(s) en tirant au jugé.",
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 100 éliminations d'ennemis au tir au jugé.",
+      "Faites 75 éliminations d'ennemis par tirs de loin.",
+      "Faites 5 éliminations d'ennemis sans subir de dégâts 25 fois.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "oden",
+     "name": "Oden",
+     "level": 39,
+     "multi": [
+      "Éliminez 25 joueur(s) avec le lance-grenades Miri 40 mm.",
+      "Éliminez 10 fois 2 joueurs sans recharger.",
+      "Éliminez 100 joueur(s) en regardant dans le viseur.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) avec le lance-grenades Miri 40 mm.",
+      "Éliminez 30 fois 2 ennemis sans recharger.",
+      "Éliminez 250 ennemi(s) en regardant dans le viseur.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "axion",
+     "name": "Axion",
+     "level": 52,
+     "multi": [
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Éliminez 25 joueur(s) avec le lance-grenades Miri 40 mm.",
+      "Éliminez 25 fois 2 joueurs sans recharger.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) à longue distance.",
+      "Éliminez 75 ennemi(s) avec le lance-grenades Miri 40 mm.",
+      "Éliminez 50 fois 2 ennemis sans recharger.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "cronen-squall",
+     "name": "Cronen Squall",
+     "level": 55,
+     "multi": [
+      "Éliminez 20 joueur(s) à bout portant.",
+      "Éliminez 20 joueurs en prenant appui.",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) d'un tir dans la tête",
+      "Faites 25 double(s) élimination(s) contre des joueurs.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Faites 20 éliminations d'ennemis en prenant appui.",
+      "Éliminez 50 ennemi(s) en regardant dans le viseur.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mitraillette",
+   "weapons": [
+    {
+     "id": "iso-nightshade",
+     "name": "ISO Nightshade",
+     "level": 1,
+     "multi": [
+      "Faites 50 éliminations de joueurs en regardant dans le viseur.",
+      "Faites 10 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 125 éliminations en regardant dans le viseur.",
+      "Faites 30 double(s) élimination(s) contre des ennemis.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "vel-46",
+     "name": "VEL 46",
+     "level": 5,
+     "multi": [
+      "Faites 50 éliminations de joueurs en regardant dans le viseur.",
+      "Éliminez 20 joueur(s) en position allongée.",
+      "Éliminez 20 joueur(s) d'un tir dans la tête.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 125 ennemis en regardant dans le viseur.",
+      "Éliminez 100 ennemi(s) en position allongée.",
+      "Faites 75 tirs dans la tête d'ennemis.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "wz-55-striga",
+     "name": "Wz.55 Striga",
+     "level": 18,
+     "multi": [
+      "Éliminez 50 joueur(s) en utilisant un silencieux.",
+      "Éliminez 20 joueur(s) en sautant.",
+      "Éliminez 40 joueur(s) à bout portant.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 125 ennemi(s) en utilisant un silencieux.",
+      "Éliminez 50 ennemi(s) en sautant.",
+      "Faites 100 éliminations à bout portant.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "ppsh-41",
+     "name": "PPSh-41",
+     "level": 30,
+     "multi": [
+      "Faites 10 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Faites 100 éliminations de joueurs en regardant dans le viseur.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 30 double(s) élimination(s) contre des joueurs.",
+      "Faites 75 éliminations par tirs de loin.",
+      "Faites 250 éliminations en regardant dans le viseur.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "x-58-nyx",
+     "name": "X-58 Nyx",
+     "level": 46,
+     "multi": [
+      "Éliminez 20 joueur(s) en vous déplaçant.",
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Éliminez 40 joueur(s) d'un tir dans la tête.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations en vous déplaçant.",
+      "Éliminez 75 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fusil à pompe",
+   "weapons": [
+    {
+     "id": "rezi-12",
+     "name": "Rezi 12",
+     "level": 1,
+     "multi": [
+      "Éliminez 20 joueur(s) à bout portant.",
+      "Éliminez 10 joueur(s) à longue distance.",
+      "Éliminez 40 joueur(s) en sautant.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Éliminez 25 fois 2 joueurs sans recharger.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Éliminez 50 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) en sautant.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 125 ennemi(s) au tir au jugé.",
+      "Faites 2 éliminations d'ennemis sans recharger 50 fois.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "warlord",
+     "name": "Warlord",
+     "level": 32,
+     "multi": [
+      "Éliminez 20 joueur(s) en vous déplaçant.",
+      "Faites 10 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 50 joueur(s) en position allongée.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 50 joueur(s) en tirant au jugé.",
+      "Éliminez 25 fois 2 joueurs sans recharger.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) en vous déplaçant.",
+      "Faites 30 double(s) élimination(s) contre des ennemis.",
+      "Éliminez 125 ennemi(s) en position allongée.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 125 ennemi(s) au tir au jugé.",
+      "Faites 2 éliminations d'ennemis sans recharger 50 fois.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mitrailleuse",
+   "weapons": [
+    {
+     "id": "mitrailleuse-finn",
+     "name": "Mitrailleuse FiNN",
+     "level": 1,
+     "multi": [
+      "Éliminez 20 joueur(s) à bout portant.",
+      "Éliminez 10 fois 2 joueurs sans recharger.",
+      "Éliminez 30 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 25 fois 2 joueurs sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Éliminez 30 fois 2 ennemis sans recharger.",
+      "Éliminez 100 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 75 fois 2 ennemis sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "type-73",
+     "name": "Type 73",
+     "level": 9,
+     "multi": [
+      "Éliminez 20 joueurs en prenant appui.",
+      "Faites 10 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 40 joueur(s) d'un tir dans la tête.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 25 fois 2 joueurs sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis en prenant appui.",
+      "Faites 30 double(s) élimination(s) contre des ennemis.",
+      "Faites 100 tirs dans la tête d'ennemis.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 75 fois 2 ennemis sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "apoc-338",
+     "name": "APOC 338",
+     "level": 44,
+     "multi": [
+      "Éliminez 20 joueur(s) en tirant au jugé.",
+      "Éliminez 20 joueur(s) à longue distance.",
+      "Éliminez 100 joueur(s) en position allongée.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 25 fois 2 joueurs sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) au tir au jugé.",
+      "Faites 75 éliminations par tirs de loin.",
+      "Éliminez 250 ennemi(s) en position allongée.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 75 fois 2 ennemis sans relâcher la gâchette.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fusil tactique",
+   "weapons": [
+    {
+     "id": "mar-09",
+     "name": "Mar-09",
+     "level": 1,
+     "multi": [
+      "Éliminez 20 joueurs en prenant appui.",
+      "Faites 25 éliminations de joueurs en étant accroupi.",
+      "Éliminez 30 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 éliminations d'ennemis en prenant appui.",
+      "Faites 75 éliminations d'ennemis en étant accroupi.",
+      "Éliminez 100 ennemi(s) à longue distance.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "oris-8-6",
+     "name": "Oris 8.6",
+     "level": 11,
+     "multi": [
+      "Éliminez 10 joueur(s) en visée rapide.",
+      "Faites 20 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 15 fois 3 joueurs(s) sans mourir.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 50 éliminations d'ennemis en visée rapide.",
+      "Faites 50 double(s) élimination(s) contre des ennemis.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 50 fois.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "mosin-nagant",
+     "name": "Mosin-Nagant",
+     "level": 36,
+     "multi": [
+      "Éliminez 25 joueur(s) d'un tir dans la tête.",
+      "Éliminez 10 fois 2 joueurs sans recharger.",
+      "Faites 100 éliminations de joueurs en étant concentré.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 75 tirs dans la tête d'ennemis.",
+      "Faites 2 éliminations sans mourir 30 fois.",
+      "Faites 250 éliminations d'ennemis en étant concentré.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fusil de précision",
+   "weapons": [
+    {
+     "id": "kg-7-vulcan",
+     "name": "KG-7 Vulcan",
+     "level": 1,
+     "multi": [
+      "Éliminez 10 joueur(s) en tirant au jugé.",
+      "Éliminez 20 joueur(s) d'un tir dans la tête.",
+      "Éliminez 20 fois 2 joueurs(s) sans subir de dégâts.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 25 éliminations d'ennemis au tir au jugé.",
+      "Éliminez 75 ennemi(s) d'un tir dans la tête.",
+      "Faites 2 éliminations d'ennemis sans subir de dégâts 30 fois.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "astaroth-57",
+     "name": "Astaroth .57",
+     "level": 25,
+     "multi": [
+      "Éliminez 10 fois 3 joueurs sans mourir.",
+      "Éliminez 20 joueurs en prenant appui.",
+      "Éliminez 20 fois 2 joueurs en moins de 5 secondes.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 25 fois.",
+      "Faites 75 éliminations d'ennemis en prenant appui.",
+      "Éliminez 50 fois 2 ennemis en moins de 5 secondes.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "signal-50",
+     "name": "Signal 50",
+     "level": 50,
+     "multi": [
+      "Éliminez 10 fois 2 joueurs en moins de 5 secondes.",
+      "Éliminez 20 joueur(s) en visée rapide.",
+      "Éliminez 40 joueur(s) à longue distance.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 75 joueur(s) en position allongée.",
+      "Éliminez 75 joueur(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 25 fois 2 éliminations en moins de 5 secondes.",
+      "Faites 30 éliminations d'ennemis en visée rapide.",
+      "Faites 100 éliminations en un tir.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 150 ennemi(s) en position allongée.",
+      "Éliminez 150 ennemi(s) en un tir.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Arme de poing",
+   "weapons": [
+    {
+     "id": "sang-9mm",
+     "name": "Sang 9mm",
+     "level": 1,
+     "multi": [
+      "Faites 25 éliminations de joueurs en regardant dans le viseur.",
+      "Éliminez 5 fois 3 joueurs sans mourir.",
+      "Faites 50 éliminations de joueurs en utilisant l'Akimbo.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 20 joueur(s) par-derrière.",
+      "Éliminez 40 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemis en regardant dans le viseur.",
+      "Faites 3 éliminations d'ennemis sans subir de dégâts 15 fois.",
+      "Faites 125 éliminations d'ennemis en utilisant l'Akimbo.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "krait-p68",
+     "name": "Krait P68",
+     "level": 7,
+     "multi": [
+      "Éliminez 15 joueur(s) en étant suspendu à un rebord.",
+      "Éliminez 15 joueur(s) à bout portant.",
+      "Éliminez 50 joueur(s) en utilisant un silencieux.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 20 joueur(s) par-derrière.",
+      "Éliminez 40 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 50 ennemi(s) en étant suspendu à un rebord.",
+      "Faites 50 éliminations d'ennemis à bout portant.",
+      "Éliminez 125 ennemi(s) en utilisant un silencieux.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "50-gs",
+     "name": ".50 GS",
+     "level": 41,
+     "multi": [
+      "Éliminez 20 joueur(s) d'un tir dans la tête.",
+      "Faites 7 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 30 joueur(s) à bout portant.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 20 joueur(s) par-derrière.",
+      "Éliminez 40 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 75 ennemi(s) d'un tir dans la tête.",
+      "Faites 20 double(s) élimination(s) contre des ennemis.",
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "mojave-357",
+     "name": "Mojave .357",
+     "level": 47,
+     "multi": [
+      "Éliminez 15 joueur(s) en un tir.",
+      "Éliminez 10 fois 2 joueurs sans recharger.",
+      "Éliminez 30 joueur(s) à bout portant.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 20 joueur(s) par-derrière.",
+      "Éliminez 40 joueur(s) en tirant au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 50 joueur(s) en un tir.",
+      "Faites 2 éliminations d'ennemis sans recharger 20 fois.",
+      "Faites 75 éliminations d'ennemis à bout portant.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Éliminez 100 ennemi(s) au tir au jugé.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lanceur",
+   "weapons": [
+    {
+     "id": "pila",
+     "name": "PILA",
+     "level": 1,
+     "multi": [
+      "Éliminez 10 joueur(s) par tir direct.",
+      "Faites 5 double(s) élimination(s) contre des joueurs.",
+      "Détruisez 30 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 2 joueurs(s) sans subir de dégâts.",
+      "Éliminez 7 fois 10 joueurs(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 25 ennemi(s) par tir direct.",
+      "Faites 100 double(s) élimination(s) contre des ennemis.",
+      "Détruisez 50 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 50 ennemi(s) au cours d'une même partie dans DMZ",
+      "Éliminez 50 fois 2 ennemi(s) sans subir de dégâts.",
+      "Éliminez 15 fois 10 ennemi(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "rpg-8",
+     "name": "RPG-8",
+     "level": 23,
+     "multi": [
+      "Éliminez 10 joueur(s) en position allongée.",
+      "Éliminez 10 joueur(s) à longue distance.",
+      "Détruisez 30 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 2 joueurs(s) sans subir de dégâts.",
+      "Éliminez 7 fois 10 joueurs(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 25 ennemi(s) en position allongée.",
+      "Éliminez 25 ennemi(s) à longue distance.",
+      "Détruisez 50 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 50 ennemi(s) au cours d'une même partie dans DMZ",
+      "Éliminez 50 fois 2 ennemi(s) sans subir de dégâts.",
+      "Éliminez 15 fois 10 ennemi(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "jokr",
+     "name": "JOKR",
+     "level": 43,
+     "multi": [
+      "Faites 5 double(s) élimination(s) contre des joueurs.",
+      "Éliminez 10 joueur(s) à longue distance.",
+      "Détruisez 30 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 2 joueurs(s) sans subir de dégâts.",
+      "Éliminez 7 fois 10 joueurs(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Faites 15 double(s) élimination(s) contre des ennemis.",
+      "Éliminez 25 ennemi(s) à longue distance.",
+      "Détruisez 50 série(s) d'éliminations ou véhicule(s).",
+      "Éliminez 50 ennemi(s) au cours d'une même partie dans DMZ",
+      "Éliminez 50 fois 2 ennemi(s) sans subir de dégâts.",
+      "Éliminez 15 fois 10 ennemi(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    },
+    {
+     "id": "pm-40-anvil",
+     "name": "PM-40 Anvil",
+     "level": 54,
+     "multi": [
+      "Éliminez 25 joueur(s) par tir direct.",
+      "Éliminez 5 fois 2 joueurs sans recharger.",
+      "Éliminez 40 joueur(s) en vous déplaçant.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 2 joueurs(s) sans subir de dégâts.",
+      "Éliminez 7 fois 10 joueurs(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 25 ennemi(s) par tir direct.",
+      "Éliminez 20 fois 2 ennemis sans recharger.",
+      "Éliminez 100 ennemi(s) en vous déplaçant.",
+      "Éliminez 50 ennemi(s) au cours d'une même partie dans DMZ",
+      "Éliminez 50 fois 2 ennemi(s) sans subir de dégâts.",
+      "Éliminez 15 fois 10 ennemi(s) dans une partie.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Corps à corps",
+   "weapons": [
+    {
+     "id": "lame-en-carbone-fss-1095",
+     "name": "Lame en carbone FSS 1095",
+     "level": 1,
+     "multi": [
+      "Éliminez 25 joueur(s) en sautant.",
+      "Éliminez 25 joueurs(s) en utilisant l'exécution au corps à corps lourde.",
+      "Éliminez 25 fois 2 joueurs(s) en 5 secondes.",
+      "Éliminez 15 joueurs(s) au cours d'une même partie",
+      "Éliminez 15 fois 3 joueurs sans mourir.",
+      "Éliminez 25 joueur(s) par-derrière.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ],
+     "dmz": [
+      "Éliminez 100 ennemi(s) en sautant.",
+      "Éliminez 75 ennemi(s) en utilisant l'exécution au corps à corps lourde.",
+      "Éliminez 50 fois 2 ennemi(s) en 5 secondes.",
+      "Éliminez 100 ennemi(s) au cours d'une même partie dans DMZ.",
+      "Éliminez 50 fois 3 ennemi(s) sans subir de dégâts.",
+      "Éliminez 75 ennemi(s) par-derrière.",
+      "Se débloque après Rupture harmonique sur 33 armes"
+     ]
+    }
+   ]
+  }
+ ],
+ "seed": {
+  "multi": {
+   "han-86": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "m4": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "hyeon-burst": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "patriot-xmr": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kastov-762": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "oden": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "axion": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cronen-squall": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "iso-nightshade": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "vel-46": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "wz-55-striga": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "ppsh-41": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "x-58-nyx": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "rezi-12": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "warlord": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "mitrailleuse-finn": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "type-73": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "apoc-338": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mar-09": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "oris-8-6": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mosin-nagant": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kg-7-vulcan": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "astaroth-57": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "signal-50": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sang-9mm": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "krait-p68": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "50-gs": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mojave-357": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "pila": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "rpg-8": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "jokr": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "pm-40-anvil": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "lame-en-carbone-fss-1095": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  "prestige": {
+   "han-86": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "m4": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "hyeon-burst": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "patriot-xmr": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kastov-762": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "oden": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "axion": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "cronen-squall": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "iso-nightshade": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "vel-46": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "wz-55-striga": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "ppsh-41": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "x-58-nyx": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "rezi-12": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "warlord": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "mitrailleuse-finn": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "type-73": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "apoc-338": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "mar-09": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "oris-8-6": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "mosin-nagant": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kg-7-vulcan": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "astaroth-57": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "signal-50": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "sang-9mm": [
+    0,
+    null,
+    0,
+    0
+   ],
+   "krait-p68": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "50-gs": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "mojave-357": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pila": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "rpg-8": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "jokr": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "pm-40-anvil": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "lame-en-carbone-fss-1095": [
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ }
+}

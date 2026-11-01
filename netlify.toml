@@ -1,0 +1,38 @@
+# Configuration Netlify — lue automatiquement au déploiement.
+# Les variables VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY se règlent dans
+# l'interface Netlify (Site configuration > Environment variables), pas ici.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Version LTS de Node utilisée pour le build
+  NODE_VERSION = "22"
+
+# Application d'une seule page : toute URL inconnue renvoie vers index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Fichiers générés par Vite (nom avec empreinte) : mis en cache longtemps
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Images d'armes : cache d'une semaine
+[[headers]]
+  for = "/weapons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# En-têtes de sécurité de base
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

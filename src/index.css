@@ -1,0 +1,207 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Geist Variable', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+/* ---------- MW4 tracker: brand accent + camo colors ---------- */
+.dark {
+    --primary: oklch(0.86 0.19 131);          /* lime accent */
+    --primary-foreground: oklch(0.2 0.05 131);
+    --ring: oklch(0.86 0.19 131 / 60%);
+    --background: oklch(0.13 0.005 250);
+    --card: oklch(0.18 0.008 250);
+    --popover: oklch(0.2 0.008 250);
+}
+
+:root {
+    --camo-s: #5b8def;
+    --camo-or: #e6b422;
+    --camo-pl: #b9d4e6;
+    --camo-rh: #c04bff;
+    --camo-dv: linear-gradient(90deg, #ff4d6d, #ffb347, #7cff6b, #4dd2ff, #b06bff);
+}
+
+/* Color dots (legend, summary, challenge list) */
+.dot { width: 10px; height: 10px; border-radius: 9999px; display: inline-block; flex: none; }
+.dot.k-s  { background: var(--camo-s); }
+.dot.k-or { background: var(--camo-or); }
+.dot.k-pl { background: var(--camo-pl); }
+.dot.k-rh { background: var(--camo-rh); }
+.dot.k-dv { background: var(--camo-dv); }
+.dot.k-p1 { background: linear-gradient(135deg, #3fd6c6, #4f8dff); }
+.dot.k-p2 { background: linear-gradient(135deg, #4f8dff, #a65cff); }
+.dot.k-p3 { background: linear-gradient(135deg, #a65cff, #ff4f8b); }
+.dot.k-p4 { background: linear-gradient(135deg, #ff4f8b, #ffa63f); }
+
+/* Camo toggle buttons: each kind sets --c (color), --fill (owned gradient), --ink (text on fill) */
+.camo.k-s  { --c: #5b8def; --fill: linear-gradient(135deg, #9dbcff, #3e6fd8 60%, #2a4f9e); --ink: #fff; }
+.camo.k-or { --c: #e6b422; --fill: linear-gradient(135deg, #fff1a8, #e6b422 45%, #a87a0c); --ink: #2b1d00; }
+.camo.k-pl { --c: #b9d4e6; --fill: linear-gradient(135deg, #ffffff, #c9dceb 45%, #7f9fb5); --ink: #14202a; }
+.camo.k-rh { --c: #c04bff; --fill: linear-gradient(135deg, #f0a6ff, #c04bff 50%, #5e17a8); --ink: #fff; }
+.camo.k-dv { --c: #ff6b9a; --fill: var(--camo-dv); --ink: #1a1020; }
+.camo.k-p1 { --c: #3fd6c6; --fill: linear-gradient(135deg, #8ff5ea, #3fd6c6 40%, #4f8dff); --ink: #06221f; }
+.camo.k-p2 { --c: #4f8dff; --fill: linear-gradient(135deg, #a9c8ff, #4f8dff 40%, #a65cff); --ink: #fff; }
+.camo.k-p3 { --c: #a65cff; --fill: linear-gradient(135deg, #d6b0ff, #a65cff 40%, #ff4f8b); --ink: #fff; }
+.camo.k-p4 { --c: #ff4f8b; --fill: linear-gradient(135deg, #ffa8c6, #ff4f8b 40%, #ffa63f); --ink: #2a0712; }
+
+.camo {
+    border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+    background: color-mix(in srgb, var(--c) 12%, var(--muted));
+    color: var(--c);
+    transition: box-shadow .2s, border-color .15s, background .2s, color .2s;
+}
+.camo:hover:not(:disabled) { border-color: var(--c); background: color-mix(in srgb, var(--c) 22%, var(--muted)); }
+.camo[data-state="on"] {
+    background: var(--fill);
+    color: var(--ink);
+    border-color: transparent;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--c) 45%, transparent), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.camo.k-dv:not([data-state="on"]) {
+    border-color: transparent;
+    background:
+      linear-gradient(color-mix(in srgb, #ff6b9a 10%, var(--muted)), color-mix(in srgb, #ff6b9a 10%, var(--muted))) padding-box,
+      var(--camo-dv) border-box;
+}
+.camo[data-locked] { opacity: .4; filter: grayscale(.6); cursor: not-allowed; }
+.camo:disabled:not([data-locked]) { opacity: .25; cursor: not-allowed; }
+
+.weapon-img { background: radial-gradient(ellipse at 50% 60%, oklch(0.26 0.01 250) 0%, transparent 70%); }
+.weapon-img img { filter: drop-shadow(0 6px 10px rgba(0,0,0,.55)); transition: scale .25s; }
+.group\/row:hover .weapon-img img { scale: 1.08; }
+
+/* Warzone camos */
+.dot.k-sg { background: linear-gradient(135deg, #9fe8ff, #c8b6ff); }
+.dot.k-az { background: #4fc3ff; }
+.dot.k-ap { background: linear-gradient(135deg, #ff3b2f, #ff9a3c); }
+.camo.k-sg { --c: #a9c8ff; --fill: linear-gradient(135deg, #e6f7ff, #9fe8ff 35%, #c8b6ff 70%, #7f8cff); --ink: #10142a; }
+.camo.k-az { --c: #4fc3ff; --fill: linear-gradient(135deg, #e0f7ff, #4fc3ff 50%, #1769aa); --ink: #04192a; }
+.camo.k-ap { --c: #ff5a3c; --fill: linear-gradient(135deg, #ffd27a, #ff5a3c 45%, #8a0f0f); --ink: #fff; }
