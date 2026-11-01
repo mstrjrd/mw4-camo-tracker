@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CloudOff, HardDriveDownload, Loader2, LogIn, RotateCcw, Search, UserPlus, X } from 'lucide-react';
+import { CloudOff, HardDriveDownload, Loader2, LogIn, Search, UserPlus, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { AnimatePresence, motion } from 'motion/react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,10 +10,6 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { MODES } from './constants';
 import { useCatalog } from './catalog';
 import { useTracker } from './useTracker';
@@ -31,7 +27,7 @@ const layoutSpring = { type: 'spring', stiffness: 380, damping: 34 };
 export default function App({ user, onAuth, onAdmin }) {
   const {
     ui, mode, progress, prog, linkDmz, status, isLocked, lockReason, legacyAvailable,
-    toggle, setLinkDmz, setUiValue, toggleOpen, resetCurrent, importProgress, importLegacy, dismissLegacy, retry, flush,
+    toggle, setLinkDmz, setUiValue, toggleOpen, resetMode, importProgress, importLegacy, dismissLegacy, retry, flush,
   } = useTracker(user?.id ?? null);
   const [search, setSearch] = useState('');
   const [cat, setCat] = useState(ALL);
@@ -66,6 +62,9 @@ export default function App({ user, onAuth, onAdmin }) {
         user={user}
         progress={progress}
         onImport={importProgress}
+        onReset={resetMode}
+        currentMode={mode}
+        linkDmz={linkDmz}
         onBack={() => setPage('tracker')}
         beforeSignOut={flush}
       />
@@ -74,7 +73,6 @@ export default function App({ user, onAuth, onAdmin }) {
 
   const { hideDone, open } = ui;
   const cols = catalog.cols(mode);
-  const modeLabel = MODES.find(m => m.id === mode).label;
   const q = search.trim().toLowerCase();
   const isDone = id => prog[id].every(v => v === null || v === 1);
 
@@ -251,29 +249,6 @@ export default function App({ user, onAuth, onAdmin }) {
 
       {/* extra bottom padding on phones so the bottom bar never hides the footer */}
       <footer className="mx-auto w-full max-w-7xl space-y-3 px-4 pb-28 sm:px-6 sm:pb-10">
-        <div className="flex flex-wrap gap-2">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive"><RotateCcw />Réinitialiser l'onglet</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Réinitialiser « {modeLabel} » ?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Toutes les cases de cet onglet seront décochées
-                  {(mode === 'multi' || mode === 'dmz') && linkDmz && ' (Multi et DMZ sont liés, les deux seront remis à zéro)'}.
-                  {user && ' Tu peux exporter ta progression avant depuis « Mon profil » pour pouvoir revenir en arrière.'}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={() => { resetCurrent(); toast('Onglet réinitialisé'); }}>
-                  Réinitialiser
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
         <p className="text-sm text-muted-foreground">
           {user
             ? 'Progression enregistrée dans ton compte et synchronisée sur tous tes appareils.'

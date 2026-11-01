@@ -244,13 +244,21 @@ export function useTracker(userId) {
     });
   }, []);
 
-  const resetCurrent = useCallback(() => {
+  /** Unchecks everything in one mode ('multi' | 'dmz' | 'warzone' | 'prestige') or in all of them ('all'). */
+  const resetMode = useCallback(target => {
     update(p => {
-      const next = {};
-      for (const [id, arr] of Object.entries(p[progKey])) next[id] = arr.map(v => (v === null ? null : 0));
-      return { ...p, [progKey]: next };
+      const keys = target === 'all'
+        ? ['multi', 'dmz', 'warzone', 'prestige']
+        : [target === 'dmz' && p.linkDmz ? 'multi' : target]; // linked DMZ shares the Multi progress
+      const out = { ...p };
+      for (const key of keys) {
+        const next = {};
+        for (const [id, arr] of Object.entries(p[key] || {})) next[id] = arr.map(v => (v === null ? null : 0));
+        out[key] = next;
+      }
+      return out;
     });
-  }, [progKey, update]);
+  }, [update]);
 
   const importProgress = useCallback(obj => update(() => normalizeProgress(obj, weaponsRef.current)), [update]);
 
@@ -262,7 +270,7 @@ export function useTracker(userId) {
   return {
     ui, mode, progress: full, prog, linkDmz, status, isLocked, lockReason,
     legacyAvailable: !!legacy,
-    toggle, setLinkDmz, setUiValue, toggleOpen, resetCurrent, importProgress, importLegacy,
+    toggle, setLinkDmz, setUiValue, toggleOpen, resetMode, importProgress, importLegacy,
     dismissLegacy: () => setLegacy(null),
     retry: () => setReloadKey(k => k + 1),
     flush: save,

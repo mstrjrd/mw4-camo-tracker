@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, AtSign, Download, KeyRound, Loader2, LogOut, Save, Upload, UserRound, HardDrive } from 'lucide-react';
+import { ArrowLeft, AtSign, Download, KeyRound, Loader2, LogOut, RotateCcw, Save, Upload, UserRound, HardDrive } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,9 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase, redirectUrl } from '@/lib/supabase';
+import { MODES } from '../constants';
 import { authErrorMessage, displayName } from '@/auth/AuthProvider';
 
 const item = {
@@ -172,8 +174,16 @@ function PasswordSection({ user }) {
   );
 }
 
-function ProgressSection({ progress, onImport }) {
+const RESET_TARGETS = [...MODES.map(m => ({ id: m.id, label: m.label })), { id: 'all', label: 'Tout (tous les modes)' }];
+
+function ProgressSection({ progress, onImport, onReset, currentMode, linkDmz }) {
   const [pending, setPending] = useState(null); // parsed file waiting for confirmation
+  const [resetTarget, setResetTarget] = useState(currentMode || 'multi');
+  const [confirmReset, setConfirmReset] = useState(false);
+  const targetLabel = RESET_TARGETS.find(t => t.id === resetTarget)?.label;
+  const linkedNote = linkDmz && (resetTarget === 'multi' || resetTarget === 'dmz')
+    ? ' Multi et DMZ sont liés : les deux seront remis à zéro.'
+    : '';
 
   const exportFile = () => {
     const blob = new Blob([JSON.stringify(progress, null, 1)], { type: 'application/json' });
@@ -202,7 +212,7 @@ function ProgressSection({ progress, onImport }) {
     <Section
       icon={HardDrive}
       title="Ma progression"
-      description="Sauvegarde ta progression dans un fichier, ou restaure-la depuis un fichier exporté."
+      description="Sauvegarde ta progression dans un fichier, restaure-la depuis un fichier exporté, ou remets un mode à zéro."
     >
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" onClick={exportFile}><Download />Exporter</Button>
@@ -213,6 +223,41 @@ function ProgressSection({ progress, onImport }) {
           </label>
         </Button>
       </div>
+
+      <div className="space-y-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3">
+        <p className="text-sm font-medium">Réinitialiser la progression</p>
+        <p className="text-xs text-muted-foreground">Décoche tous les camos du mode choisi. Pense à exporter avant pour pouvoir revenir en arrière.</p>
+        <div className="flex flex-wrap gap-2">
+          <Select value={resetTarget} onValueChange={setResetTarget}>
+            <SelectTrigger className="w-56" aria-label="Mode à réinitialiser"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {RESET_TARGETS.map(t => <SelectItem key={t.id} value={t.id}>{t.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Button variant="destructive" onClick={() => setConfirmReset(true)}><RotateCcw />Réinitialiser</Button>
+        </div>
+      </div>
+
+      <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Réinitialiser « {targetLabel} » ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tous les camos {resetTarget === 'all' ? 'de tous les modes' : 'de ce mode'} seront décochés.{linkedNote}
+              {' '}Cette action est définitive, sauf si tu as exporté ta progression avant.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => { onReset(resetTarget); toast(`« ${targetLabel} » réinitialisé`); }}
+            >
+              Réinitialiser
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={!!pending} onOpenChange={o => { if (!o) setPending(null); }}>
         <AlertDialogContent>
@@ -236,7 +281,7 @@ function ProgressSection({ progress, onImport }) {
 }
 
 /** Account page: username, email, password, progress export/import. */
-export default function ProfilePage({ user, progress, onImport, onBack, beforeSignOut }) {
+export default function ProfilePage({ user, progress, onImport, onReset, currentMode, linkDmz, onBack, beforeSignOut }) {
   const signOut = async () => {
     await beforeSignOut?.();
     const { error } = await supabase.auth.signOut();
@@ -272,7 +317,7 @@ export default function ProfilePage({ user, progress, onImport, onBack, beforeSi
         <UsernameSection user={user} />
         <EmailSection user={user} />
         <PasswordSection user={user} />
-        <ProgressSection progress={progress} onImport={onImport} />
+        <ProgressSection progress={progress} onImport={onImport} onReset={onReset} currentMode={currentMode} linkDmz={linkDmz} />
       </motion.main>
     </div>
   );
