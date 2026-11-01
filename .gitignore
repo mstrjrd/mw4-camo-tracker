@@ -18,3 +18,7 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# Notes pour Claude Code (locales, non versionnées)
+CLAUDE.md
+
