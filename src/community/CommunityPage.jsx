@@ -31,10 +31,10 @@ function CamoCount({ c, n }) {
   );
 }
 
-export function PageHeader({ title, icon: Icon, onBack, children }) {
+export function PageHeader({ title, icon: Icon, onBack, children, wide = false }) {
   return (
     <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div className={cn('mx-auto flex items-center justify-between gap-3 px-4 py-3 sm:px-6', wide ? 'max-w-7xl' : 'max-w-5xl')}>
         <div className="flex min-w-0 items-center gap-2">
           <Button variant="ghost" size="icon" onClick={onBack} aria-label="Retour au tracker"><ArrowLeft /></Button>
           {Icon && <Icon className="size-5 shrink-0 text-primary" />}
@@ -126,7 +126,6 @@ export default function CommunityPage() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-semibold">{p.display_name || p.handle}</p>
-                        <p className="truncate text-xs text-muted-foreground">/joueur/{p.handle}</p>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
                         {highlight.map(i => <CamoCount key={i} c={cols[i]} n={s.counts[i]} />)}

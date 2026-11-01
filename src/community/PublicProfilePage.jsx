@@ -79,7 +79,7 @@ export default function PublicProfilePage({ handle }) {
 
   return (
     <div className="min-h-svh">
-      <PageHeader title={name} onBack={() => navigate('/')}>
+      <PageHeader title={name} onBack={() => navigate('/')} wide>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={() => navigate('/joueurs')}><Users /><span className="hidden sm:inline">Joueurs</span></Button>
           <Button variant="outline" size="sm" onClick={() => shareProfile(player.handle, name)}>
