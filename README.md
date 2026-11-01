@@ -32,14 +32,19 @@ select id from auth.users where email = 'ton-email@exemple.com'
 on conflict do nothing;
 ```
 
-## Mise en ligne sur Netlify
+## Mise en ligne sur Vercel
 
-La configuration de build est dans `netlify.toml` (build `npm run build`, dossier `dist`, Node 22).
+La configuration est dans `vercel.json` (Vite, build `npm run build`, dossier `dist`, cache et en-têtes de sécurité).
+Node 22 minimum (voir `engines` dans `package.json`).
 
-1. Pousser le projet sur GitHub.
-2. Netlify > **Add new site > Import an existing project** > choisir le dépôt.
-3. **Site configuration > Environment variables** : ajouter `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`, puis relancer un déploiement.
-4. Supabase > **Authentication > URL Configuration** : mettre l'adresse Netlify dans **Site URL** et l'ajouter aux **Redirect URLs** (liens de confirmation d'email et de mot de passe oublié).
+1. Vercel > **Add New… > Project** > importer le dépôt GitHub (framework détecté : Vite).
+2. Avant de déployer, **Environment Variables** : ajouter `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`
+   (environnements Production et Preview). Si elles sont ajoutées après coup, relancer un déploiement (*Redeploy*).
+3. Supabase > **Authentication > URL Configuration** :
+   - **Site URL** : l'adresse de production (ex. `https://mw4-camo-tracker.vercel.app`) ;
+   - **Redirect URLs** : la même adresse, et `https://*-<ton-compte>.vercel.app/**` pour les déploiements de preview.
+
+Ensuite, chaque `git push` sur `main` redéploie la production ; les autres branches créent des previews.
 
 ## Crédits
 
