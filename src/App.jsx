@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CloudOff, HardDriveDownload, Loader2, LogIn, Search, UserPlus, X } from 'lucide-react';
+import { CloudOff, HardDriveDownload, Loader2, LogIn, Search, UserPlus, Users, X } from 'lucide-react';
+import { navigate } from '@/lib/router';
 import { toast } from 'sonner';
 import { AnimatePresence, motion } from 'motion/react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -105,6 +106,11 @@ export default function App({ user, onAuth, onAdmin }) {
                 <TabsTrigger key={m.id} value={m.id} className="px-3">{m.label}</TabsTrigger>
               ))}
             </TabsList>
+            {onAuth && (
+              <Button variant="ghost" size="sm" onClick={() => navigate('/joueurs')} aria-label="Joueurs">
+                <Users /><span className="hidden md:inline">Joueurs</span>
+              </Button>
+            )}
             {user ? (
               <>
                 <SyncStatus status={status} onRetry={flush} />

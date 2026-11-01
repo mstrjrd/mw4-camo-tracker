@@ -22,12 +22,14 @@ function lockText(reason, i, text, cols, short) {
 
 const spring = { type: 'spring', stiffness: 500, damping: 30 };
 
-function CamoButton({ c, v, locked, lockHint, text, onClick }) {
+function CamoButton({ c, v, locked, lockHint, text, onClick, readOnly }) {
   const na = v === null;
   const [burst, setBurst] = useState(0);
   const disabled = na || locked;
+  const interactive = !disabled && !readOnly;
 
   const handleClick = () => {
+    if (readOnly) return;
     if (!v) setBurst(b => b + 1);
     onClick();
   };
@@ -39,18 +41,19 @@ function CamoButton({ c, v, locked, lockHint, text, onClick }) {
         <span className="flex flex-1 sm:w-11 sm:flex-none">
           <motion.button
             type="button"
-            className={cn('camo k-' + c.k, 'relative h-7 flex-1 rounded-md text-[10px] font-extrabold tracking-wide')}
+            className={cn('camo k-' + c.k, 'relative h-7 flex-1 rounded-md text-[10px] font-extrabold tracking-wide', readOnly && 'cursor-default')}
             data-state={v ? 'on' : 'off'}
             data-locked={locked || undefined}
             aria-pressed={!!v}
             aria-label={c.name}
             disabled={disabled}
+            aria-disabled={readOnly || undefined}
             onClick={handleClick}
             initial={false}
             animate={{ scale: v ? [1, 1.18, 1] : 1 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
-            whileHover={disabled ? undefined : { y: -2 }}
-            whileTap={disabled ? undefined : { scale: 0.9 }}
+            whileHover={interactive ? { y: -2 } : undefined}
+            whileTap={interactive ? { scale: 0.9 } : undefined}
           >
             {na ? '—' : c.short}
             {burst > 0 && (
@@ -83,7 +86,8 @@ function CamoButton({ c, v, locked, lockHint, text, onClick }) {
   );
 }
 
-function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onToggle, onOpen }) {
+/** readOnly: used on public profiles — shows the state, nothing can be toggled. */
+function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onToggle, onOpen, readOnly = false }) {
   const avail = arr.filter(v => v !== null).length;
   const n = arr.filter(v => v === 1).length;
   const done = n === avail;
@@ -141,6 +145,7 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                 lockHint={lockText(lockReason(weapon.id, i), i, texts?.[i], cols)}
                 text={texts?.[i]}
                 onClick={() => onToggle(weapon.id, i)}
+                readOnly={readOnly}
               />
             ))}
           </div>
@@ -196,6 +201,7 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                 const v = arr[i];
                 const locked = isLocked(weapon.id, i);
                 const disabled = v === null || locked;
+                const inactive = disabled || readOnly;
                 const id = `${weapon.id}-${c.k}-${i}`;
                 return (
                   <motion.label
@@ -207,14 +213,15 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                     className={cn(
                       'flex cursor-pointer flex-wrap items-start gap-x-3 gap-y-1 border-b px-3 py-2 text-sm last:border-b-0 hover:bg-muted/50 sm:flex-nowrap',
                       disabled && 'cursor-not-allowed',
+                      readOnly && 'cursor-default hover:bg-transparent',
                     )}
                   >
                     <Checkbox
                       id={id}
                       checked={!!v}
-                      disabled={disabled}
+                      disabled={inactive}
                       onCheckedChange={checked => onToggle(weapon.id, i, checked === true)}
-                      className="mt-0.5"
+                      className={cn('mt-0.5', readOnly && 'disabled:cursor-default disabled:opacity-100')}
                     />
                     <span className="flex min-w-36 items-center gap-1.5 font-semibold">
                       <span className={'dot k-' + c.k} />

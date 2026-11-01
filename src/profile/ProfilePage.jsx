@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, AtSign, Download, KeyRound, Loader2, LogOut, RotateCcw, Save, Upload, UserRound, HardDrive } from 'lucide-react';
+import { ArrowLeft, AtSign, Download, ExternalLink, Globe, KeyRound, Link2, Loader2, LogOut, RotateCcw, Save, Upload, UserRound, HardDrive } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase, redirectUrl } from '@/lib/supabase';
+import { Switch } from '@/components/ui/switch';
 import { MODES } from '../constants';
+import { navigate, profileUrl } from '@/lib/router';
+import { HANDLE_RE, fetchMyProfile, profileErrorMessage, saveMyProfile, suggestHandle, syncDisplayName } from '../community/api';
+import { shareProfile } from '../community/PublicProfilePage';
 import { authErrorMessage, displayName } from '@/auth/AuthProvider';
 
 const item = {
@@ -51,6 +55,7 @@ function UsernameSection({ user }) {
     const { error } = await supabase.auth.updateUser({ data: { username } });
     setBusy(false);
     if (error) return toast.error(authErrorMessage(error));
+    await syncDisplayName(user.id, username);
     toast.success('Pseudo mis à jour');
   };
 
@@ -170,6 +175,94 @@ function PasswordSection({ user }) {
         </div>
       </div>
       {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
+    </Section>
+  );
+}
+
+function ShareSection({ user }) {
+  const name = displayName(user);
+  // undefined = loading, null = no profile row yet
+  const [profile, setProfile] = useState(undefined);
+  const [handle, setHandle] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchMyProfile(user.id).then(({ data, error }) => {
+      if (error) { setError(profileErrorMessage(error)); setProfile(null); return; }
+      setProfile(data);
+      setHandle(data?.handle || suggestHandle(name));
+      setIsPublic(!!data?.is_public);
+    });
+  }, [user.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const cleanHandle = handle.trim().toLowerCase();
+  const validHandle = HANDLE_RE.test(cleanHandle);
+  const dirty = !profile || profile.handle !== cleanHandle || profile.is_public !== isPublic;
+
+  const submit = async e => {
+    e.preventDefault();
+    if (!validHandle) return setError('Identifiant invalide : 3 à 30 caractères, lettres minuscules, chiffres et tirets (sans tiret au début).');
+    setBusy(true); setError('');
+    const { data, error } = await saveMyProfile(user.id, { handle: cleanHandle, display_name: name, is_public: isPublic });
+    setBusy(false);
+    if (error) return setError(profileErrorMessage(error));
+    setProfile(data);
+    toast.success(isPublic ? 'Profil public : tout le monde peut voir ta progression' : 'Profil privé');
+  };
+
+  const live = profile?.is_public;
+
+  return (
+    <Section
+      icon={Globe}
+      title="Partager mon profil"
+      description="Rends ton profil public pour que les autres joueurs voient ta progression (lecture seule). Tu peux le repasser en privé à tout moment."
+      onSubmit={submit}
+      footer={
+        <Button type="submit" disabled={busy || profile === undefined || !dirty}>
+          {busy ? <Loader2 className="animate-spin" /> : <Save />}Enregistrer
+        </Button>
+      }
+    >
+      {profile === undefined ? (
+        <Loader2 className="size-5 animate-spin text-primary" />
+      ) : (
+        <>
+          <div className="flex items-center justify-between gap-4 rounded-lg border p-3">
+            <div>
+              <Label htmlFor="p-public">Profil public</Label>
+              <p className="text-xs text-muted-foreground">
+                {isPublic ? 'Visible dans la liste des joueurs et via ton lien.' : 'Seul toi peux voir ta progression.'}
+              </p>
+            </div>
+            <Switch id="p-public" checked={isPublic} onCheckedChange={setIsPublic} />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="p-handle">Identifiant du lien</Label>
+            <div className="flex items-center rounded-md border bg-input/30 focus-within:ring-[3px] focus-within:ring-ring/50">
+              <span className="truncate pl-3 text-sm text-muted-foreground">{window.location.host}/joueur/</span>
+              <Input
+                id="p-handle"
+                value={handle}
+                maxLength={30}
+                onChange={e => setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                className="border-0 bg-transparent pl-0.5 shadow-none focus-visible:ring-0 dark:bg-transparent"
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">3 à 30 caractères : lettres minuscules, chiffres et tirets.</p>
+          </div>
+          {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
+          {live && (
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3">
+              <code className="min-w-0 flex-1 truncate text-sm">{profileUrl(profile.handle)}</code>
+              <Button type="button" variant="outline" size="sm" onClick={() => shareProfile(profile.handle, name)}><Link2 />Copier / partager</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => navigate(`/joueur/${profile.handle}`)}><ExternalLink />Voir</Button>
+            </div>
+          )}
+        </>
+      )}
     </Section>
   );
 }
@@ -317,6 +410,7 @@ export default function ProfilePage({ user, progress, onImport, onReset, current
         <UsernameSection user={user} />
         <EmailSection user={user} />
         <PasswordSection user={user} />
+        <ShareSection user={user} />
         <ProgressSection progress={progress} onImport={onImport} onReset={onReset} currentMode={currentMode} linkDmz={linkDmz} />
       </motion.main>
     </div>

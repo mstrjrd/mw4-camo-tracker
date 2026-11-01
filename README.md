@@ -23,6 +23,7 @@ Dans Supabase > **SQL Editor**, exécuter une fois, dans cet ordre :
 3. `supabase/warzone.sql` — défis Warzone
 4. `supabase/camos.sql` — noms des camouflages modifiables
 5. `supabase/seasons.sql` — saison d'arrivée des armes
+6. `supabase/profiles.sql` — profils publics partageables (page Joueurs, `/joueur/<identifiant>`)
 
 Se déclarer administrateur (avec l'email de son compte sur le site) :
 

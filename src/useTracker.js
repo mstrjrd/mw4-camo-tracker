@@ -137,7 +137,11 @@ export function useTracker(userId) {
   useEffect(() => {
     const onHide = () => { if (document.visibilityState === 'hidden') save(); };
     document.addEventListener('visibilitychange', onHide);
-    return () => document.removeEventListener('visibilitychange', onHide);
+    return () => {
+      document.removeEventListener('visibilitychange', onHide);
+      // Also flush when the tracker unmounts (going to Joueurs / Administration / another account)
+      save();
+    };
   }, [save]);
 
   const update = useCallback(fn => {
