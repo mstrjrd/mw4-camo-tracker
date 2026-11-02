@@ -181,12 +181,18 @@ export function useTracker(userId) {
 
   /**
    * Unlock rules (Multi / DMZ / Warzone):
+   * - Or: the 3 Spéciales of the weapon (only those available for it);
    * - Platine (PL): Or on as many weapons of the category as it has base weapons (e.g. 4 for the 4 base pistols);
    * - Rupture harmonique (RH): Platine on UNLOCK_THRESHOLD (33) weapons;
    * - Divergence (DV): Rupture harmonique on UNLOCK_THRESHOLD (33) weapons.
-   * Returns null if camo i of weapon wid can be clicked, otherwise { need, done, total, category? }.
+   * Returns null if camo i of weapon wid can be clicked, otherwise { need, done, total, category?, specials? }.
    */
   const ownLock = useCallback((wid, i) => {
+    if (i === OR) {
+      const specials = prog[wid].slice(0, MASTERY_START).filter(v => v !== null);
+      const done = specials.filter(Boolean).length;
+      if (done < specials.length) return { specials: true, done, total: specials.length };
+    }
     if (i === PL) {
       const category = categoryOf.get(wid);
       const c = orByCategory[category];
@@ -196,7 +202,7 @@ export function useTracker(userId) {
       return { need: i - 1, done: counts[i - 1], total: UNLOCK_THRESHOLD };
     }
     return null;
-  }, [categoryOf, orByCategory, counts]);
+  }, [prog, categoryOf, orByCategory, counts]);
 
   const lockReason = useCallback((wid, i) => {
     // Already validated camos are never re-locked; Prestige has no unlock rules
@@ -204,7 +210,7 @@ export function useTracker(userId) {
     const own = ownLock(wid, i);
     if (own) return own;
     // Validating a camo also validates the ones before it: blocked if one of those is itself blocked
-    for (const j of [PL, RH]) {
+    for (const j of [OR, PL, RH]) {
       if (j < i && !prog[wid][j]) {
         const r = ownLock(wid, j);
         if (r) return r;

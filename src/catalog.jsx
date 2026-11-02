@@ -16,6 +16,21 @@ const BASE_CATEGORIES = DATA.categories.map(c => c.name);
 
 export const weaponImage = w => w.image || `${import.meta.env.BASE_URL}weapons/${w.id}.webp`;
 
+// codmunity.gg slugs that differ from our weapon id; null = no builds page (melee).
+const CODMUNITY_SLUGS = {
+  'mitrailleuse-finn': 'finn-lmg',
+  'mar-09': 'mar-9',
+  'oris-8-6': 'oris-86',
+  'wz-55-striga': 'wz55-striga',
+  'lame-en-carbone-fss-1095': null,
+};
+
+/** Link to the weapon's multiplayer builds on codmunity.gg, or null when there is none. */
+export function codmunityUrl(w) {
+  const slug = w.id in CODMUNITY_SLUGS ? CODMUNITY_SLUGS[w.id] : w.id;
+  return slug ? `https://codmunity.gg/fr/weapon/mw4/${slug}#multiplayer-builds` : null;
+}
+
 export const slugify = s =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 

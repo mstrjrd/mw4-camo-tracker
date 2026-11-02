@@ -2,18 +2,22 @@ import { memo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronDown, CheckCircle2, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { weaponImage } from '../catalog';
+import { codmunityUrl, weaponImage } from '../catalog';
 import SeasonBadge from './SeasonBadge';
 import { DV, RH } from '../constants';
 
 /** Explains why a camo is locked; null for Divergence blocked by RH, its description already says it. */
 function lockText(reason, i, text, cols, short) {
   if (!reason || (i === DV && reason.need === RH && text)) return null;
-  const name = cols[reason.need].name;
   const { done, total, category, base } = reason;
+  if (reason.specials) {
+    return short ? ` (${done}/${total} Spéciales)` : `Nécessite les ${total} camos Spéciaux (${done}/${total})`;
+  }
+  const name = cols[reason.need].name;
   if (short) return ` (${done}/${total} ${name}${category ? ` en ${category}` : ''})`;
   return category
     ? `Nécessite ${name} sur ${total} armes « ${category} »${base ? ' (nombre d’armes de base)' : ''} — ${done}/${total}`
@@ -86,6 +90,26 @@ function CamoButton({ c, v, locked, lockHint, text, onClick, readOnly }) {
   );
 }
 
+/** Opens the weapon's multiplayer builds on codmunity.gg; renders nothing without a page. */
+function BuildsButton({ weapon, className }) {
+  const url = codmunityUrl(weapon);
+  if (!url) return null;
+  return (
+    <Button asChild variant="outline" size="xs" className={cn('h-5 shrink-0 px-1.5 text-[11px] font-semibold text-primary', className)}>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-no-toggle
+        title={`Voir les classes ${weapon.name} sur codmunity.gg`}
+        onKeyDown={e => e.stopPropagation()}
+      >
+        Classes
+      </a>
+    </Button>
+  );
+}
+
 /** readOnly: used on public profiles — shows the state, nothing can be toggled. */
 function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onToggle, onOpen, readOnly = false }) {
   const avail = arr.filter(v => v !== null).length;
@@ -126,10 +150,14 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
 
         {/* Name + meta */}
         <div className="min-w-0 flex-1 sm:w-56 sm:flex-none">
-          <p className="truncate font-semibold tracking-wide uppercase">{weapon.name}</p>
+          <div className="flex items-center gap-1.5">
+            <p className="min-w-0 truncate font-semibold tracking-wide uppercase">{weapon.name}</p>
+            <BuildsButton weapon={weapon} className="max-sm:hidden" />
+          </div>
           <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             Niveau {weapon.level}
             <SeasonBadge season={weapon.season} />
+            <BuildsButton weapon={weapon} className="sm:hidden" />
           </div>
         </div>
 
