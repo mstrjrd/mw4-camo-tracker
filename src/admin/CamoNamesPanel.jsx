@@ -100,7 +100,7 @@ export default function CamoNamesPanel() {
                 return (
                   <div key={i} className="grid grid-cols-[3rem_1fr_5.5rem] items-center gap-2">
                     <span
-                      className={`camo k-${k} flex h-7 items-center justify-center rounded-md text-[10px] font-extrabold tracking-wide`}
+                      className={`camo k-${k} flex h-7 items-center justify-center text-[11px] font-medium`}
                       data-state="on"
                       aria-hidden
                     >

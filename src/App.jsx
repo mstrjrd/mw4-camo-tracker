@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { CloudOff, HardDriveDownload, Loader2, LogIn, Search, UserPlus, Users, X } from 'lucide-react';
+import { CloudOff, HardDriveDownload, Loader2, LogIn, UserPlus, Users, X } from 'lucide-react';
 import { navigate } from '@/lib/router';
 import { toast } from 'sonner';
 import { AnimatePresence, motion } from 'motion/react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ease } from '@/lib/motion';
 import { MODES } from './constants';
 import { useCatalog } from './catalog';
 import { useTracker } from './useTracker';
@@ -18,11 +16,15 @@ import Summary from './components/Summary';
 import WeaponRow from './components/WeaponRow';
 import UserMenu, { SyncStatus } from './components/UserMenu';
 import ProfilePage from './profile/ProfilePage';
-import BottomNav from './components/BottomNav';
+import BottomNav, { MODE_ITEMS } from './components/BottomNav';
+import IconRail from './components/IconRail';
+import SearchField from './components/SearchField';
+import WeaponHero from './components/WeaponHero';
+import SidePanel from './components/SidePanel';
 import Logo from './components/Logo';
 
 const ALL = 'all';
-const layoutSpring = { type: 'spring', stiffness: 380, damping: 34 };
+const layoutMove = { duration: 0.3, ease };
 
 /** user = null → guest mode (progress kept only in this browser). onAuth(tab) opens the login/signup forms. */
 export default function App({ user, onAuth, onAdmin }) {
@@ -86,26 +88,26 @@ export default function App({ user, onAuth, onAdmin }) {
     }))
     .filter(c => c.shown.length);
 
-  // Visible position of each card, used to stagger the entrance animation
-  const order = new Map(sections.flatMap(c => c.shown).map((w, i) => [w.id, i]));
+  // Used by the hero and the side panel: shows the weapon's row with its challenges open
+  const focusWeapon = id => {
+    setSearch('');
+    setCat(ALL);
+    if (!open[mode + ':' + id]) toggleOpen(id);
+    setTimeout(() => document.getElementById('w-' + id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60);
+  };
 
   return (
-    <Tabs value={mode} onValueChange={v => setUiValue('mode', v)} className="min-h-svh gap-0">
-      <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <Logo size={40} />
-            <div>
-              <h1 className="text-base font-bold uppercase tracking-wider">MW4 Camo Tracker</h1>
-            </div>
+    <div className="min-h-svh lg:pl-20">
+      <IconRail label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={v => setUiValue('mode', v)} onHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+      <header className="sticky top-0 z-20 bg-background/85 backdrop-blur">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            <Logo size={32} className="lg:hidden" />
+            {/* On desktop the rail carries the logo and the header carries the search */}
+            <h1 className="truncate text-base font-medium lg:sr-only">MW4 Camo Tracker</h1>
+            <SearchField value={search} onChange={setSearch} className="hidden w-full max-w-md lg:block" />
           </div>
           <div className="flex items-center gap-3">
-            {/* Desktop tabs; on phones the modes are in the bottom bar (BottomNav) */}
-            <TabsList className="hidden sm:inline-flex">
-              {MODES.map(m => (
-                <TabsTrigger key={m.id} value={m.id} className="px-3">{m.label}</TabsTrigger>
-              ))}
-            </TabsList>
             {onAuth && (
               <Button variant="ghost" size="sm" onClick={() => navigate('/joueurs')} aria-label="Joueurs">
                 <Users /><span className="hidden md:inline">Joueurs</span>
@@ -125,26 +127,29 @@ export default function App({ user, onAuth, onAdmin }) {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 xl:grid xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start xl:gap-6">
+        <div className="min-w-0 space-y-6">
         <AnimatePresence>
           {!user && (
             <motion.div key="guest" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }}>
-              <Card size="sm" className="bg-amber-500/10 ring-amber-500/40">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-amber-400">
-                    <CloudOff className="size-4 shrink-0" />Tu n'es pas connecté : ta progression n'est pas sauvegardée
-                  </CardTitle>
-                  <CardDescription>
-                    Elle reste seulement sur ce navigateur et peut être perdue (cache vidé, autre appareil, navigation privée).
-                    {onAuth && ' Connecte-toi ou crée un compte pour la garder et la retrouver partout : tes camos déjà cochés pourront être importés.'}
-                  </CardDescription>
-                </CardHeader>
-                {onAuth && (
-                  <CardContent className="flex flex-wrap gap-2">
-                    <Button size="sm" onClick={() => onAuth('signup')}><UserPlus />Créer un compte</Button>
-                    <Button size="sm" variant="outline" onClick={() => onAuth('login')}><LogIn />Se connecter</Button>
-                  </CardContent>
-                )}
+              <Card size="sm">
+                <CardContent className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+                  <div className="min-w-0 flex-[1_1_320px] space-y-1">
+                    <p className="flex items-center gap-2 text-sm font-medium">
+                      <CloudOff className="size-4 shrink-0 text-amber-400" />Progression non sauvegardée
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Elle reste sur ce navigateur et peut être perdue.
+                      {onAuth && ' Crée un compte pour la retrouver partout : tes camos déjà cochés pourront être importés.'}
+                    </p>
+                  </div>
+                  {onAuth && (
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => onAuth('signup')}><UserPlus />Créer un compte</Button>
+                      <Button size="sm" variant="outline" onClick={() => onAuth('login')}><LogIn />Se connecter</Button>
+                    </div>
+                  )}
+                </CardContent>
               </Card>
             </motion.div>
           )}
@@ -164,13 +169,21 @@ export default function App({ user, onAuth, onAdmin }) {
           )}
         </AnimatePresence>
 
+        <WeaponHero
+          modeLabel={MODES.find(m => m.id === mode)?.label}
+          mode={mode}
+          weapons={catalog.weapons}
+          prog={prog}
+          cols={cols}
+          isLocked={isLocked}
+          lockReason={lockReason}
+          onOpen={focusWeapon}
+        />
+
         <Summary mode={mode} prog={prog} />
 
         <section className="flex flex-wrap items-center gap-3">
-          <div className="relative min-w-0 flex-[1_1_220px]">
-            <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input type="search" placeholder="Rechercher une arme…" value={search} onChange={e => setSearch(e.target.value)} className="pl-8" />
-          </div>
+          <SearchField value={search} onChange={setSearch} className="flex-[1_1_220px] lg:hidden" />
           <Select value={cat} onValueChange={setCat}>
             <SelectTrigger className="w-52"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -195,10 +208,10 @@ export default function App({ user, onAuth, onAdmin }) {
           <motion.div
             key={mode}
             className="space-y-6"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease }}
           >
             <AnimatePresence mode="popLayout" initial={false}>
               {sections.map(c => (
@@ -209,22 +222,23 @@ export default function App({ user, onAuth, onAdmin }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ layout: layoutSpring }}
+                  transition={{ layout: layoutMove }}
                 >
-                  <motion.div layout="position" className="flex items-center justify-between border-b pb-2">
-                    <h2 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">{c.name}</h2>
-                    <Badge variant="outline" className="tabular-nums">{c.doneCount} / {c.weapons.length}</Badge>
+                  <motion.div layout="position" className="flex items-center justify-between pb-1">
+                    <h2 className="text-sm font-medium">{c.name}</h2>
+                    <span className="text-xs text-muted-foreground tabular-nums">{c.doneCount} / {c.weapons.length}</span>
                   </motion.div>
                   <div className="divide-y overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
                     <AnimatePresence mode="popLayout" initial={false}>
                       {c.shown.map(w => (
                         <motion.div
                           key={w.id}
+                          id={'w-' + w.id}
                           layout="position"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0, transition: { delay: Math.min(order.get(w.id), 20) * 0.025, type: 'spring', stiffness: 280, damping: 28 } }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
                           exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                          transition={{ layout: layoutSpring }}
+                          transition={{ layout: layoutMove }}
                         >
                           <WeaponRow
                             weapon={w}
@@ -251,10 +265,12 @@ export default function App({ user, onAuth, onAdmin }) {
             )}
           </motion.div>
         </AnimatePresence>
+        </div>
+        <SidePanel categories={catalog.categories} weapons={catalog.weapons} prog={prog} onOpen={focusWeapon} />
       </main>
 
-      {/* extra bottom padding on phones so the bottom bar never hides the footer */}
-      <footer className="mx-auto w-full max-w-7xl space-y-3 px-4 pb-28 sm:px-6 sm:pb-10">
+      {/* extra bottom padding below lg so the bottom bar never hides the footer */}
+      <footer className="mx-auto w-full max-w-[1600px] space-y-3 px-4 pb-28 sm:px-6 lg:pb-10">
         <p className="text-sm text-muted-foreground">
           {user
             ? 'Progression enregistrée dans ton compte et synchronisée sur tous tes appareils.'
@@ -262,7 +278,7 @@ export default function App({ user, onAuth, onAdmin }) {
           Données issues du Google Sheet « MW4 Camo Tracker », images d'armes : codmunity.gg.
         </p>
       </footer>
-      <BottomNav mode={mode} onChange={v => setUiValue('mode', v)} />
-    </Tabs>
+      <BottomNav label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={v => setUiValue('mode', v)} />
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Check, Link2, Loader2, Share2, UserRound, Users } from 'lucide-react';
+import { Link2, Loader2, Share2, UserRound, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/lib/supabase';
 import { navigate, profileUrl } from '@/lib/router';
@@ -91,14 +90,13 @@ export default function PublicProfilePage({ handle }) {
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="flex size-12 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary uppercase">
+            <span className="flex size-12 items-center justify-center rounded-full bg-muted text-sm font-medium uppercase">
               {name.slice(0, 2)}
             </span>
             <div>
-              <p className="text-lg font-bold">{name}</p>
+              <p className="text-lg font-medium">{name}</p>
               <p className="text-xs text-muted-foreground">
-                <Badge variant="outline" className="mr-2"><Check />Profil public</Badge>
-                {updated && `Mis à jour le ${updated}`}
+                Profil public{updated && ` · Mis à jour le ${updated}`}
               </p>
             </div>
           </div>
@@ -118,11 +116,11 @@ export default function PublicProfilePage({ handle }) {
 
         {catalog.categories.map(c => (
           <section key={c.name} className="space-y-3">
-            <div className="flex items-center justify-between border-b pb-2">
-              <h2 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">{c.name}</h2>
-              <Badge variant="outline" className="tabular-nums">
+            <div className="flex items-center justify-between pb-1">
+              <h2 className="text-sm font-medium">{c.name}</h2>
+              <span className="text-xs text-muted-foreground tabular-nums">
                 {c.weapons.filter(w => prog[w.id].every(v => v === null || v === 1)).length} / {c.weapons.length}
-              </Badge>
+              </span>
             </div>
             <div className="divide-y overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
               {c.weapons.map(w => (

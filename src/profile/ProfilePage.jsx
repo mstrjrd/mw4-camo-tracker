@@ -18,12 +18,10 @@ import { navigate, profileUrl } from '@/lib/router';
 import { HANDLE_RE, fetchMyProfile, profileErrorMessage, saveMyProfile, suggestHandle, syncDisplayName } from '../community/api';
 import { shareProfile } from '../community/PublicProfilePage';
 import { authErrorMessage, displayName } from '@/auth/AuthProvider';
+import { riseItem } from '@/lib/motion';
 import { reserveUsername } from '@/auth/usernames';
 
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } },
-};
+const item = riseItem;
 
 function Section({ icon: Icon, title, description, children, onSubmit, footer }) {
   const Wrapper = onSubmit ? 'form' : 'div';
@@ -391,11 +389,11 @@ export default function ProfilePage({ user, progress, onImport, onReset, current
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-2">
             <Button variant="ghost" size="icon" onClick={onBack} aria-label="Retour au tracker"><ArrowLeft /></Button>
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary uppercase">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium uppercase">
               {displayName(user).slice(0, 2)}
             </span>
             <div className="min-w-0">
-              <h1 className="font-bold tracking-wider uppercase">Mon profil</h1>
+              <h1 className="font-medium">Mon profil</h1>
               <p className="truncate text-xs text-muted-foreground">{displayName(user)}</p>
             </div>
           </div>

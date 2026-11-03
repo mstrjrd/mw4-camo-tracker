@@ -1,17 +1,16 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronDown, CheckCircle2, Lock } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { ease } from '@/lib/motion';
 import { codmunityUrl, weaponImage } from '../catalog';
 import SeasonBadge from './SeasonBadge';
 import { DV, RH } from '../constants';
 
 /** Explains why a camo is locked; null for Divergence blocked by RH, its description already says it. */
-function lockText(reason, i, text, cols, short) {
+export function lockText(reason, i, text, cols, short) {
   if (!reason || (i === DV && reason.need === RH && text)) return null;
   const { done, total, category, base } = reason;
   if (reason.specials) {
@@ -24,58 +23,32 @@ function lockText(reason, i, text, cols, short) {
     : `Nécessite ${name} sur ${total} armes (${done}/${total})`;
 }
 
-const spring = { type: 'spring', stiffness: 500, damping: 30 };
-
 function CamoButton({ c, v, locked, lockHint, text, onClick, readOnly }) {
   const na = v === null;
-  const [burst, setBurst] = useState(0);
   const disabled = na || locked;
-  const interactive = !disabled && !readOnly;
-
-  const handleClick = () => {
-    if (readOnly) return;
-    if (!v) setBurst(b => b + 1);
-    onClick();
-  };
 
   return (
     <Tooltip>
       {/* span wrapper so the tooltip still shows on disabled buttons */}
       <TooltipTrigger asChild>
         <span className="flex flex-1 sm:w-11 sm:flex-none">
-          <motion.button
+          <button
             type="button"
-            className={cn('camo k-' + c.k, 'relative h-7 flex-1 rounded-md text-[10px] font-extrabold tracking-wide', readOnly && 'cursor-default')}
+            className={cn('camo k-' + c.k, 'h-7 flex-1 text-[11px] font-medium', readOnly && 'cursor-default')}
             data-state={v ? 'on' : 'off'}
             data-locked={locked || undefined}
             aria-pressed={!!v}
             aria-label={c.name}
             disabled={disabled}
             aria-disabled={readOnly || undefined}
-            onClick={handleClick}
-            initial={false}
-            animate={{ scale: v ? [1, 1.18, 1] : 1 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            whileHover={interactive ? { y: -2 } : undefined}
-            whileTap={interactive ? { scale: 0.9 } : undefined}
+            onClick={readOnly ? undefined : onClick}
           >
             {na ? '—' : c.short}
-            {burst > 0 && (
-              <motion.span
-                key={burst}
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-md border-2"
-                style={{ borderColor: 'var(--c)' }}
-                initial={{ opacity: 0.9, scale: 1 }}
-                animate={{ opacity: 0, scale: 1.7 }}
-                transition={{ duration: 0.55, ease: 'easeOut' }}
-              />
-            )}
-          </motion.button>
+          </button>
         </span>
       </TooltipTrigger>
       <TooltipContent className="max-w-64">
-        <p className="font-semibold">{c.name}{locked && ' (verrouillé)'}</p>
+        <p className="font-medium">{c.name}{locked && ' (verrouillé)'}</p>
         {/* tooltip background is light: use a dark amber for contrast */}
         {locked && lockHint && (
           <p className="flex items-center gap-1 font-medium text-amber-700">
@@ -84,29 +57,28 @@ function CamoButton({ c, v, locked, lockHint, text, onClick, readOnly }) {
         )}
         {na ? <p>Non disponible pour cette arme</p>
           : text ? <p className="opacity-80">{text}</p>
-          : text === '' && <p className="italic opacity-60">Défi pas encore renseigné</p>}
+          : text === '' && <p className="opacity-60">Défi pas encore renseigné</p>}
       </TooltipContent>
     </Tooltip>
   );
 }
 
 /** Opens the weapon's multiplayer builds on codmunity.gg; renders nothing without a page. */
-function BuildsButton({ weapon, className }) {
+function BuildsLink({ weapon }) {
   const url = codmunityUrl(weapon);
   if (!url) return null;
   return (
-    <Button asChild variant="outline" size="xs" className={cn('h-5 shrink-0 px-1.5 text-[11px] font-semibold text-primary', className)}>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-no-toggle
-        title={`Voir les classes ${weapon.name} sur codmunity.gg`}
-        onKeyDown={e => e.stopPropagation()}
-      >
-        Classes
-      </a>
-    </Button>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-no-toggle
+      title={`Voir les classes ${weapon.name} sur codmunity.gg`}
+      className="-my-1 py-1 underline underline-offset-4 decoration-foreground/20 transition-colors hover:text-foreground hover:decoration-foreground/60"
+      onKeyDown={e => e.stopPropagation()}
+    >
+      Classes
+    </a>
   );
 }
 
@@ -119,7 +91,7 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
   const nextText = texts && nextIdx >= 0 ? texts[nextIdx] : null;
 
   return (
-    <div className={cn('group/row transition-colors', done && 'bg-primary/5', open && 'bg-muted/30')}>
+    <div className={cn('transition-colors', open && 'bg-muted/30')}>
       {/* The whole row opens/closes the challenge list, except the camo buttons (data-no-toggle) */}
       <div
         role="button"
@@ -134,30 +106,27 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
         }}
       >
         {/* Thumbnail */}
-        <div className="weapon-img flex h-12 w-24 shrink-0 items-center justify-center rounded-md">
-          <motion.img
+        <div className="weapon-img flex h-12 w-24 shrink-0 items-center justify-center">
+          <img
             src={weaponImage(weapon)}
             alt=""
             loading="lazy"
             decoding="async"
             className="max-h-full max-w-full object-contain"
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ type: 'spring', stiffness: 180, damping: 22 }}
             onError={e => { e.currentTarget.style.visibility = 'hidden'; }}
           />
         </div>
 
         {/* Name + meta */}
         <div className="min-w-0 flex-1 sm:w-56 sm:flex-none">
-          <div className="flex items-center gap-1.5">
-            <p className="min-w-0 truncate font-semibold tracking-wide uppercase">{weapon.name}</p>
-            <BuildsButton weapon={weapon} className="max-sm:hidden" />
-          </div>
-          <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <p className="truncate font-medium uppercase">{weapon.name}</p>
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
             Niveau {weapon.level}
+            {/* Hidden on phones, where the line wraps here and the dot would dangle */}
+            <span aria-hidden className="max-sm:hidden">·</span>
             <SeasonBadge season={weapon.season} />
-            <BuildsButton weapon={weapon} className="sm:hidden" />
+            {codmunityUrl(weapon) && <span aria-hidden>·</span>}
+            <BuildsLink weapon={weapon} />
           </div>
         </div>
 
@@ -188,7 +157,7 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.16 }}
               >
-                Prochain : <span className="font-medium text-foreground">{cols[nextIdx].name}</span> — {nextText || <em>défi pas encore renseigné</em>}
+                Prochain : <span className="font-medium text-foreground">{cols[nextIdx].name}</span> — {nextText || 'défi pas encore renseigné'}
               </motion.p>
             )}
           </AnimatePresence>
@@ -196,20 +165,13 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
 
         {/* Count + expand */}
         <div className="flex shrink-0 items-center gap-1">
-          <motion.div key={done ? 'done' : 'todo'} initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={spring}>
-            <Badge variant={done ? 'default' : 'secondary'} className="tabular-nums">
-              {done && <CheckCircle2 />}
-              {n} / {avail}
-            </Badge>
-          </motion.div>
-          <motion.span
-            aria-hidden
-            animate={{ rotate: open ? 180 : 0 }}
-            transition={spring}
-            className="inline-flex size-7 items-center justify-center text-muted-foreground"
-          >
-            <ChevronDown className="size-4" />
-          </motion.span>
+          <span className={cn('flex items-center gap-1 text-xs tabular-nums', done ? 'font-medium text-primary' : 'text-muted-foreground')}>
+            {done && <CheckCircle2 className="size-3.5" />}
+            {n} / {avail}
+          </span>
+          <span aria-hidden className="inline-flex size-7 items-center justify-center text-muted-foreground">
+            <ChevronDown className={cn('size-4 transition-transform duration-200', open && 'rotate-180')} />
+          </span>
         </div>
       </div>
 
@@ -222,7 +184,7 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+            transition={{ duration: 0.24, ease }}
           >
             <div className="mx-3 mb-3 overflow-hidden rounded-lg border bg-background/40 sm:ml-[7.75rem]">
               {cols.map((c, i) => {
@@ -232,15 +194,12 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                 const inactive = disabled || readOnly;
                 const id = `${weapon.id}-${c.k}-${i}`;
                 return (
-                  <motion.label
+                  <label
                     key={i}
                     htmlFor={id}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: disabled ? 0.55 : 1, x: 0 }}
-                    transition={{ delay: i * 0.03 }}
                     className={cn(
                       'flex cursor-pointer flex-wrap items-start gap-x-3 gap-y-1 border-b px-3 py-2 text-sm last:border-b-0 hover:bg-muted/50 sm:flex-nowrap',
-                      disabled && 'cursor-not-allowed',
+                      disabled && 'cursor-not-allowed opacity-55',
                       readOnly && 'cursor-default hover:bg-transparent',
                     )}
                   >
@@ -251,16 +210,16 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
                       onCheckedChange={checked => onToggle(weapon.id, i, checked === true)}
                       className={cn('mt-0.5', readOnly && 'disabled:cursor-default disabled:opacity-100')}
                     />
-                    <span className="flex min-w-36 items-center gap-1.5 font-semibold">
+                    <span className="flex min-w-36 items-center gap-2 font-medium">
                       <span className={'dot k-' + c.k} />
                       {c.name}
                       {locked && <Lock className="size-3" />}
                     </span>
                     <span className={cn('text-muted-foreground transition-opacity', v === 1 && 'line-through opacity-70')}>
-                      {v === null ? 'Non disponible pour cette arme' : texts?.[i] || (texts && <em>Défi pas encore renseigné</em>)}
+                      {v === null ? 'Non disponible pour cette arme' : texts?.[i] || (texts && 'Défi pas encore renseigné')}
                       {locked && lockText(lockReason(weapon.id, i), i, texts?.[i], cols, true)}
                     </span>
-                  </motion.label>
+                  </label>
                 );
               })}
             </div>

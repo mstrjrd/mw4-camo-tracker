@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/lib/supabase';
 import { navigate } from '@/lib/router';
@@ -14,11 +13,6 @@ import { MODES } from '../constants';
 import { useCatalog } from '../catalog';
 import { fetchPublicPlayers, profileErrorMessage } from './api';
 import { playerStats } from './stats';
-
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 26 } },
-};
 
 const MEDALS = ['text-amber-300', 'text-slate-300', 'text-orange-400'];
 
@@ -37,8 +31,8 @@ export function PageHeader({ title, icon: Icon, onBack, children, wide = false }
       <div className={cn('mx-auto flex items-center justify-between gap-3 px-4 py-3 sm:px-6', wide ? 'max-w-7xl' : 'max-w-5xl')}>
         <div className="flex min-w-0 items-center gap-2">
           <Button variant="ghost" size="icon" onClick={onBack} aria-label="Retour au tracker"><ArrowLeft /></Button>
-          {Icon && <Icon className="size-5 shrink-0 text-primary" />}
-          <h1 className="truncate font-bold tracking-wider uppercase">{title}</h1>
+          {Icon && <Icon className="size-4 shrink-0 text-muted-foreground" />}
+          <h1 className="truncate font-medium">{title}</h1>
         </div>
         {children}
       </div>
@@ -101,31 +95,31 @@ export default function CommunityPage() {
           <div className="flex justify-center py-16"><Loader2 className="size-8 animate-spin text-primary" /></div>
         ) : !shown.length ? (
           <p className="py-16 text-center text-muted-foreground">
-            {players.length ? 'Aucun joueur ne correspond.' : 'Aucun profil public pour le moment. Sois le premier !'}
+            {players.length ? 'Aucun joueur ne correspond.' : 'Aucun profil public pour le moment.'}
           </p>
         ) : (
           <motion.div
             key={mode}
             className="space-y-2"
-            initial="hidden"
-            animate="show"
-            variants={{ show: { transition: { staggerChildren: 0.04 } } }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
           >
             {shown.map(p => {
               const s = p.stats[mode];
               const rank = ranked.indexOf(p);
               return (
-                <motion.div key={p.user_id} variants={item}>
+                <div key={p.user_id}>
                   <Card size="sm" className="cursor-pointer transition-colors hover:bg-muted/40" onClick={() => navigate(`/joueur/${p.handle}`)}>
                     <CardContent className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                      <span className={cn('w-7 text-center font-bold tabular-nums', MEDALS[rank] || 'text-muted-foreground')}>
+                      <span className={cn('w-7 text-center font-medium tabular-nums', MEDALS[rank] || 'text-muted-foreground')}>
                         {rank < 3 ? <Trophy className="mx-auto size-4" /> : `#${rank + 1}`}
                       </span>
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary uppercase">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium uppercase">
                         {(p.display_name || p.handle).slice(0, 2)}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate font-semibold">{p.display_name || p.handle}</p>
+                        <p className="truncate font-medium">{p.display_name || p.handle}</p>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
                         {highlight.map(i => <CamoCount key={i} c={cols[i]} n={s.counts[i]} />)}
@@ -133,13 +127,13 @@ export default function CommunityPage() {
                       <div className="w-full space-y-1 sm:w-40">
                         <div className="flex justify-between text-xs text-muted-foreground">
                           <span>{s.done} / {s.max}</span>
-                          <Badge variant="secondary" className="h-4 px-1.5 text-[10px] tabular-nums">{s.pct}%</Badge>
+                          <span className="tabular-nums">{s.pct.toLocaleString('fr-FR')}&nbsp;%</span>
                         </div>
                         <Progress value={s.pct} />
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
           </motion.div>

@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { supabase, redirectUrl } from '@/lib/supabase';
 import { authErrorMessage, useAuth } from './AuthProvider';
 import { checkUsername } from './usernames';
+import { riseItem } from '@/lib/motion';
 
 function Field({ id, label, ...props }) {
   return (
@@ -45,15 +46,15 @@ export function AuthShell({ title, description, children, footer }) {
     <div className="flex min-h-svh items-center justify-center px-4 py-10">
       <motion.div
         className="w-full max-w-sm"
-        initial={{ opacity: 0, y: 16, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+        variants={riseItem}
+        initial="hidden"
+        animate="show"
       >
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
-          <Logo size={72} />
+          <Logo size={56} />
           <div>
-            <h1 className="text-lg font-bold tracking-wider uppercase">MW4 Camo Tracker</h1>
-            <p className="text-sm text-muted-foreground">Suis ta progression de camos, sur tous tes appareils.</p>
+            <h1 className="text-lg font-medium">MW4 Camo Tracker</h1>
+            <p className="text-sm text-muted-foreground">Suis ta progression de camos, sur tous tes appareils</p>
           </div>
         </div>
         <Card>
@@ -140,7 +141,7 @@ function SignupForm() {
     if (data.user && data.user.identities?.length === 0) return setError('Un compte existe déjà avec cet email.');
     // No session = email confirmation is enabled on the project
     if (!data.session) setSentTo(email);
-    else toast.success(`Bienvenue ${username} !`);
+    else toast.success(`Bienvenue ${username}`);
   };
 
   if (sentTo) {

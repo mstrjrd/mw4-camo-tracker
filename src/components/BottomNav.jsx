@@ -1,21 +1,25 @@
 import { motion } from 'motion/react';
 import { Medal, Radiation, Map as MapIcon, Swords } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ease } from '@/lib/motion';
 import { MODES } from '../constants';
 
-const ICONS = { multi: Swords, dmz: Radiation, warzone: MapIcon, prestige: Medal };
+const MODE_ICONS = { multi: Swords, dmz: Radiation, warzone: MapIcon, prestige: Medal };
 
-/** Mobile-only bottom tab bar to switch between Multijoueur / DMZ / Warzone / Prestige. */
-export default function BottomNav({ mode, onChange }) {
+/** Game modes as navigation items, for IconRail and BottomNav. */
+export const MODE_ITEMS = MODES.map(m => ({ ...m, icon: MODE_ICONS[m.id] }));
+
+/** Bottom tab bar, below lg (IconRail takes over on desktop). items: [{ id, label, short?, icon }]. */
+export default function BottomNav({ label, items, value, onChange }) {
   return (
     <nav
-      aria-label="Modes de jeu"
-      className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden"
+      aria-label={label}
+      className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      <div className="grid grid-cols-4">
-        {MODES.map(m => {
-          const Icon = ICONS[m.id];
-          const active = mode === m.id;
+      <div className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}>
+        {items.map(m => {
+          const Icon = m.icon;
+          const active = value === m.id;
           return (
             <button
               key={m.id}
@@ -31,12 +35,10 @@ export default function BottomNav({ mode, onChange }) {
                 <motion.span
                   layoutId="bottom-nav-indicator"
                   className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-primary"
-                  transition={{ type: 'spring', stiffness: 500, damping: 38 }}
+                  transition={{ duration: 0.2, ease }}
                 />
               )}
-              <motion.span animate={{ scale: active ? 1.12 : 1, y: active ? -1 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }}>
-                <Icon className="size-5" />
-              </motion.span>
+              <Icon className="size-5" />
               {m.short || m.label}
             </button>
           );

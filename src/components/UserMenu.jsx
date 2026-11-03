@@ -51,7 +51,7 @@ export default function UserMenu({ user, beforeSignOut, onAdmin, onProfile }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="gap-2 px-2">
-          <span className="flex size-7 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary uppercase">
+          <span className="flex size-7 items-center justify-center rounded-full bg-muted text-xs font-medium uppercase">
             {name.slice(0, 2)}
           </span>
           <span className="hidden max-w-32 truncate sm:inline">{name}</span>
@@ -60,7 +60,7 @@ export default function UserMenu({ user, beforeSignOut, onAdmin, onProfile }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
-          <p className="font-semibold">{name}</p>
+          <p className="font-medium">{name}</p>
           <p className="truncate text-xs font-normal text-muted-foreground">{user.email}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

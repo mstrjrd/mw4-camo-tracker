@@ -1,13 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-sans: 'Poppins', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -72,7 +74,7 @@
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
+    --radius: 0.875rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -136,9 +138,12 @@
     --primary: oklch(0.86 0.19 131);          /* lime accent */
     --primary-foreground: oklch(0.2 0.05 131);
     --ring: oklch(0.86 0.19 131 / 60%);
-    --background: oklch(0.13 0.005 250);
-    --card: oklch(0.18 0.008 250);
-    --popover: oklch(0.2 0.008 250);
+    --background: oklch(0.21 0.004 250);    /* charcoal */
+    --card: oklch(0.25 0.005 250);
+    --popover: oklch(0.27 0.005 250);
+    --muted: oklch(0.32 0.005 250);
+    --secondary: oklch(0.32 0.005 250);
+    --accent: oklch(0.32 0.005 250);
 }
 
 :root {
@@ -161,7 +166,8 @@
 .dot.k-p3 { background: linear-gradient(135deg, #a65cff, #ff4f8b); }
 .dot.k-p4 { background: linear-gradient(135deg, #ff4f8b, #ffa63f); }
 
-/* Camo toggle buttons: each kind sets --c (color), --fill (owned gradient), --ink (text on fill) */
+/* Camo toggle buttons: each kind sets --c (color), --fill (owned gradient), --ink (text on fill).
+   Color is the reward: not yet validated = neutral tile with a small mark in the camo's color. */
 .camo.k-s  { --c: #5b8def; --fill: linear-gradient(135deg, #9dbcff, #3e6fd8 60%, #2a4f9e); --ink: #fff; }
 .camo.k-or { --c: #e6b422; --fill: linear-gradient(135deg, #fff1a8, #e6b422 45%, #a87a0c); --ink: #2b1d00; }
 .camo.k-pl { --c: #b9d4e6; --fill: linear-gradient(135deg, #ffffff, #c9dceb 45%, #7f9fb5); --ink: #14202a; }
@@ -173,30 +179,44 @@
 .camo.k-p4 { --c: #ff4f8b; --fill: linear-gradient(135deg, #ffa8c6, #ff4f8b 40%, #ffa63f); --ink: #2a0712; }
 
 .camo {
-    border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
-    background: color-mix(in srgb, var(--c) 12%, var(--muted));
-    color: var(--c);
-    transition: box-shadow .2s, border-color .15s, background .2s, color .2s;
+    position: relative;
+    /* Chamfered corners, echoing the octagonal logo. Only the camo tiles get them. */
+    clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    transition: background-color .16s, color .16s, opacity .16s, transform .16s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
-.camo:hover:not(:disabled) { border-color: var(--c); background: color-mix(in srgb, var(--c) 22%, var(--muted)); }
-.camo[data-state="on"] {
+.camo::after {
+    content: '';
+    position: absolute;
+    inset: auto 8px 3px;
+    height: 2px;
+    background: var(--c);
+    opacity: .8;
+}
+.camo.k-dv::after { background: var(--camo-dv); }
+.camo:hover:not(:disabled):not([aria-disabled]) { background: color-mix(in srgb, var(--foreground) 16%, var(--muted)); color: var(--foreground); }
+.camo:active:not(:disabled):not([aria-disabled]) { transform: scale(.97); }
+.camo:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.camo[data-state="on"],
+.camo[data-state="on"]:hover:not(:disabled):not([aria-disabled]) {
     background: var(--fill);
     color: var(--ink);
-    border-color: transparent;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--c) 45%, transparent), inset 0 1px 0 rgba(255,255,255,.35);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
 }
-.camo.k-dv:not([data-state="on"]) {
-    border-color: transparent;
-    background:
-      linear-gradient(color-mix(in srgb, #ff6b9a 10%, var(--muted)), color-mix(in srgb, #ff6b9a 10%, var(--muted))) padding-box,
-      var(--camo-dv) border-box;
-}
-.camo[data-locked] { opacity: .4; filter: grayscale(.6); cursor: not-allowed; }
+.camo[data-state="on"]::after { display: none; }
+.camo[data-locked] { opacity: .45; cursor: not-allowed; }
 .camo:disabled:not([data-locked]) { opacity: .25; cursor: not-allowed; }
 
-.weapon-img { background: radial-gradient(ellipse at 50% 60%, oklch(0.26 0.01 250) 0%, transparent 70%); }
-.weapon-img img { filter: drop-shadow(0 6px 10px rgba(0,0,0,.55)); transition: scale .25s; }
-.group\/row:hover .weapon-img img { scale: 1.08; }
+/* Digital camo (logo palette) behind the hero, fading out towards the text */
+.camo-pattern {
+    background: url('/camo-pattern.svg');
+    opacity: .5;
+    mask-image: linear-gradient(to left, black, transparent 65%);
+}
+
+.weapon-img img { filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
 
 /* Warzone camos */
 .dot.k-sg { background: linear-gradient(135deg, #9fe8ff, #c8b6ff); }

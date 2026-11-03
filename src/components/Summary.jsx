@@ -6,31 +6,28 @@ import AnimatedNumber from './AnimatedNumber';
 import { pct } from '../constants';
 import { useCatalog } from '../catalog';
 
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } },
-};
-
 function Stat({ label, n, tot, dot, total }) {
   const p = pct(n, tot);
   return (
-    <motion.div variants={item}>
-      <Card size="sm" className={cn('h-full', total && 'bg-primary/5 ring-primary/40')}>
-        <CardContent className="space-y-1.5">
-          <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-            {dot && <span className={'dot ' + dot} />}
-            {label}
-          </div>
-          <div className="text-2xl font-bold tabular-nums">
-            <AnimatedNumber value={n} />{' '}
-            <span className="text-sm font-normal text-muted-foreground">
-              / {tot} · <AnimatedNumber value={p} decimals={1} />%
-            </span>
-          </div>
-          <Progress value={p} className="[&>[data-slot=progress-indicator]]:duration-700" />
-        </CardContent>
-      </Card>
-    </motion.div>
+    <Card size="sm" className={cn('h-full', total && 'col-span-2 sm:col-span-4 2xl:col-span-2')}>
+      <CardContent className="space-y-2">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          {dot && <span className={'dot ' + dot} />}
+          {label}
+        </div>
+        <div className={cn('font-medium tabular-nums', total ? 'text-4xl' : 'text-2xl')}>
+          <AnimatedNumber value={n} />{' '}
+          <span className="text-sm font-normal text-muted-foreground">
+            / {tot} · <AnimatedNumber value={p} decimals={1} />&nbsp;%
+          </span>
+        </div>
+        {/* The accent is kept for the overall figure; each camo's bar stays neutral */}
+        <Progress
+          value={p}
+          className={cn('[&>[data-slot=progress-indicator]]:duration-700', !total && '[&>[data-slot=progress-indicator]]:bg-foreground/40')}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
@@ -59,13 +56,12 @@ export default function Summary({ mode, prog }) {
     ];
   }
   return (
-    // keyed by mode so the stagger replays when switching tabs
     <motion.section
       key={mode}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
-      initial="hidden"
-      animate="show"
-      variants={{ show: { transition: { staggerChildren: 0.05 } } }}
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4 2xl:grid-cols-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
     >
       {stats}
     </motion.section>

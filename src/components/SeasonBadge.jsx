@@ -25,5 +25,5 @@ export default function SeasonBadge({ season = 0, className }) {
       </Badge>
     );
   }
-  return <Badge variant="outline" className={cn('text-muted-foreground', className)}>{seasonLabel(season)}</Badge>;
+  return <span className={className}>{seasonLabel(season)}</span>;
 }
