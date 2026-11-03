@@ -22,3 +22,6 @@ Thumbs.db
 # Notes pour Claude Code (locales, non versionnées)
 CLAUDE.md
 
+
+# Skills et config locale de Claude Code
+.claude/

@@ -27,8 +27,8 @@ export default function IconRail({ label, items, value, onChange, onHome }) {
                   aria-label={name}
                   aria-current={active ? 'page' : undefined}
                   className={cn(
-                    'flex size-12 items-center justify-center rounded-full transition-[background-color,color,transform] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                    active ? 'translate-x-2 bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                    'flex size-12 items-center justify-center rounded-full transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                   )}
                 >
                   <Icon className="size-5" />

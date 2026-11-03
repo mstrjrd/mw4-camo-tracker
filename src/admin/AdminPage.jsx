@@ -136,7 +136,7 @@ export default function AdminPage({ onBack }) {
       {/* extra bottom padding below lg so the bottom bar never hides the content */}
       <main className={cn(
         'mx-auto w-full max-w-[1600px] px-4 pt-6 pb-28 sm:px-6 lg:pb-10',
-        onWeapons && 'xl:grid xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start xl:gap-6',
+        onWeapons && 'xl:grid xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start xl:gap-6',
       )}>
         {!onWeapons ? <CamoNamesPanel /> : (<>
           <div className="min-w-0 space-y-6">

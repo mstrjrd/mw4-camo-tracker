@@ -11,7 +11,8 @@ import { displayName } from '@/auth/AuthProvider';
 const STATUS = {
   saved: { icon: CloudCheck, text: 'Sauvegardé', cls: 'text-muted-foreground' },
   saving: { icon: Loader2, text: 'Enregistrement…', cls: 'text-muted-foreground', spin: true },
-  error: { icon: CloudOff, text: 'Erreur — réessayer', cls: 'text-destructive' },
+  // Only the error keeps its text: it's the one state that asks for an action
+  error: { icon: CloudOff, text: 'Erreur — réessayer', cls: 'text-destructive', showText: true },
 };
 
 export function SyncStatus({ status, onRetry }) {
@@ -25,14 +26,16 @@ export function SyncStatus({ status, onRetry }) {
         type="button"
         disabled={status !== 'error'}
         onClick={onRetry}
+        title={s.text}
+        aria-label={s.text}
         className={'flex items-center gap-1.5 text-xs ' + s.cls}
         initial={{ opacity: 0, y: -4 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 4 }}
         transition={{ duration: 0.15 }}
       >
-        <Icon className={'size-3.5' + (s.spin ? ' animate-spin' : '')} />
-        <span className="hidden sm:inline">{s.text}</span>
+        <Icon className={'size-5' + (s.spin ? ' animate-spin' : '')} />
+        {s.showText && <span className="hidden sm:inline">{s.text}</span>}
       </motion.button>
     </AnimatePresence>
   );

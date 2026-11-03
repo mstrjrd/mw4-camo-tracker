@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ChevronDown, CheckCircle2, Lock } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, CheckCircle2, Lock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
@@ -64,21 +65,24 @@ function CamoButton({ c, v, locked, lockHint, text, onClick, readOnly }) {
 }
 
 /** Opens the weapon's multiplayer builds on codmunity.gg; renders nothing without a page. */
-function BuildsLink({ weapon }) {
+function BuildsLink({ weapon, label, className }) {
   const url = codmunityUrl(weapon);
   if (!url) return null;
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-no-toggle
-      title={`Voir les classes ${weapon.name} sur codmunity.gg`}
-      className="-my-1 py-1 underline underline-offset-4 decoration-foreground/20 transition-colors hover:text-foreground hover:decoration-foreground/60"
-      onKeyDown={e => e.stopPropagation()}
-    >
-      Classes
-    </a>
+    <Button asChild variant="outline" size="xs" className={cn('h-7 shrink-0 gap-1 px-2 text-foreground', className)}>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-no-toggle
+        title={`Voir les classes ${weapon.name} sur codmunity.gg`}
+        aria-label={`Classes ${weapon.name} sur codmunity.gg`}
+        onKeyDown={e => e.stopPropagation()}
+      >
+        <ArrowUpRight />
+        <span className={label}>Classes</span>
+      </a>
+    </Button>
   );
 }
 
@@ -118,15 +122,15 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
         </div>
 
         {/* Name + meta */}
-        <div className="min-w-0 flex-1 sm:w-56 sm:flex-none">
+        <div className="min-w-0 flex-1 sm:w-44 sm:flex-none">
           <p className="truncate font-medium uppercase">{weapon.name}</p>
           <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
             Niveau {weapon.level}
             {/* Hidden on phones, where the line wraps here and the dot would dangle */}
             <span aria-hidden className="max-sm:hidden">·</span>
             <SeasonBadge season={weapon.season} />
-            {codmunityUrl(weapon) && <span aria-hidden>·</span>}
-            <BuildsLink weapon={weapon} />
+            {/* Phones: under the name, to leave it the room; wider screens: next to the count */}
+            <BuildsLink weapon={weapon} className="sm:hidden" />
           </div>
         </div>
 
@@ -165,6 +169,8 @@ function WeaponRow({ weapon, arr, cols, texts, open, isLocked, lockReason, onTog
 
         {/* Count + expand */}
         <div className="flex shrink-0 items-center gap-1">
+          {/* Icon only on tablets, where the row is too tight for the text */}
+          <BuildsLink weapon={weapon} label="hidden lg:inline" className="mr-2 max-sm:hidden" />
           <span className={cn('flex items-center gap-1 text-xs tabular-nums', done ? 'font-medium text-primary' : 'text-muted-foreground')}>
             {done && <CheckCircle2 className="size-3.5" />}
             {n} / {avail}
