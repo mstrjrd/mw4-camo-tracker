@@ -42,7 +42,7 @@ export default function WeaponHero({ modeLabel, mode, weapons, prog, cols, isLoc
   const hint = isLocked(weapon.id, next) ? lockText(lockReason(weapon.id, next), next, texts?.[next], cols) : null;
 
   return (
-    <section className="relative rounded-xl bg-card ring-1 ring-foreground/10 sm:mt-8">
+    <section className="relative rounded-xl bg-card ring-1 ring-foreground/10 sm:not-first:mt-8">
       <div aria-hidden className="camo-pattern absolute inset-0 rounded-xl" />
       <div className="relative grid gap-4 p-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,46%)] sm:items-center sm:p-8">
         <div className="order-last min-w-0 space-y-4 sm:order-none">

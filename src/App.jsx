@@ -127,7 +127,7 @@ export default function App({ user, onAuth, onAdmin }) {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 xl:grid xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start xl:gap-6">
+      <main className="mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 sm:pt-14 xl:grid xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start xl:gap-6">
         <div className="min-w-0 space-y-6">
         <AnimatePresence>
           {!user && (

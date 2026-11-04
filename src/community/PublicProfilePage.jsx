@@ -1,18 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link2, Loader2, Share2, UserRound, Users } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Link2, Loader2, Share2, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/lib/supabase';
 import { navigate, profileUrl } from '@/lib/router';
+import { ease } from '@/lib/motion';
 import { MODES } from '../constants';
 import { useCatalog } from '../catalog';
+import SearchField from '../components/SearchField';
+import SidePanel from '../components/SidePanel';
 import Summary from '../components/Summary';
 import WeaponRow from '../components/WeaponRow';
-import { PageHeader } from './CommunityPage';
+import CommunityFrame from './CommunityFrame';
+import PlayerHero from './PlayerHero';
 import { fetchPublicPlayer, profileErrorMessage } from './api';
-import { modeProgress } from './stats';
-import { normalizeProgress } from '../useTracker';
+import { highlightCamos, modeProgress, playerName, playerStats } from './stats';
 
 const noLock = () => false;
 const noReason = () => null;
@@ -32,13 +35,14 @@ export async function shareProfile(handle, name) {
   }
 }
 
-/** Read-only view of another player's progress: /joueur/<handle> */
+/** Read-only view of another player's progress, in the tracker's frame: /joueur/<handle> */
 export default function PublicProfilePage({ handle }) {
   const catalog = useCatalog();
   const [player, setPlayer] = useState(undefined); // undefined = loading, null = not found / private
   const [error, setError] = useState('');
   const [mode, setMode] = useState('multi');
   const [open, setOpen] = useState({});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     setPlayer(undefined);
@@ -49,14 +53,21 @@ export default function PublicProfilePage({ handle }) {
     });
   }, [handle]);
 
-  const full = useMemo(() => (player ? normalizeProgress(player.progress, catalog.weapons) : null), [player, catalog.weapons]);
-  const name = player?.display_name || player?.handle || handle;
+  const ranked = useMemo(
+    () => (player ? { ...player, stats: playerStats(player.progress, catalog.weapons) } : null),
+    [player, catalog.weapons],
+  );
 
-  if (error || player === undefined || player === null) {
+  const playersButton = (
+    <Button variant="ghost" size="sm" onClick={() => navigate('/joueurs')} aria-label="Joueurs">
+      <Users /><span className="hidden md:inline">Joueurs</span>
+    </Button>
+  );
+
+  if (!ranked) {
     return (
-      <div className="min-h-svh">
-        <PageHeader title="Profil joueur" icon={UserRound} onBack={() => navigate('/')} />
-        <main className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 py-20 text-center">
+      <CommunityFrame title="Profil joueur" mode={mode} onMode={setMode} actions={playersButton}>
+        <div className="flex flex-col items-center gap-4 py-20 text-center">
           {error ? <p className="text-sm text-destructive">{error}</p>
             : player === undefined ? <Loader2 className="size-8 animate-spin text-primary" />
             : (
@@ -65,83 +76,99 @@ export default function PublicProfilePage({ handle }) {
                 <Button variant="outline" onClick={() => navigate('/joueurs')}><Users />Voir les joueurs</Button>
               </>
             )}
-        </main>
-      </div>
+        </div>
+      </CommunityFrame>
     );
   }
 
-  const prog = modeProgress(full, mode);
+  const name = playerName(ranked);
+  const prog = modeProgress(ranked.stats.full, mode);
   const cols = catalog.cols(mode);
+  const modeLabel = MODES.find(m => m.id === mode)?.label;
   const updated = player.progressUpdatedAt
     ? new Date(player.progressUpdatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
     : null;
+  const q = search.trim().toLowerCase();
+  const isDone = id => prog[id].every(v => v === null || v === 1);
+  const sections = catalog.categories
+    .map(c => ({ ...c, shown: c.weapons.filter(w => !q || w.name.toLowerCase().includes(q)) }))
+    .filter(c => c.shown.length);
+
+  const toggleOpen = id => setOpen(o => ({ ...o, [mode + ':' + id]: !o[mode + ':' + id] }));
+
+  // Used by the side panel: shows the weapon's row with its challenges open
+  const focusWeapon = id => {
+    setSearch('');
+    setOpen(o => ({ ...o, [mode + ':' + id]: true }));
+    setTimeout(() => document.getElementById('w-' + id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60);
+  };
+
+  const searchProps = { value: search, onChange: setSearch };
 
   return (
-    <div className="min-h-svh">
-      <PageHeader title={name} onBack={() => navigate('/')} wide>
-        <div className="flex gap-2">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/joueurs')}><Users /><span className="hidden sm:inline">Joueurs</span></Button>
-          <Button variant="outline" size="sm" onClick={() => shareProfile(player.handle, name)}>
-            {navigator.share ? <Share2 /> : <Link2 />}<span className="hidden sm:inline">Partager</span>
-          </Button>
-        </div>
-      </PageHeader>
+    <CommunityFrame
+      title={name}
+      mode={mode}
+      onMode={setMode}
+      search={searchProps}
+      actions={playersButton}
+      aside={<SidePanel categories={catalog.categories} weapons={catalog.weapons} prog={prog} onOpen={focusWeapon} />}
+      footer="Profil public, en lecture seule. Images d'armes : codmunity.gg."
+    >
+      <PlayerHero
+        player={ranked}
+        label={`${modeLabel}${updated ? ` · Mis à jour le ${updated}` : ''}`}
+        mode={mode}
+        weapons={catalog.weapons}
+        cols={cols}
+        highlight={highlightCamos(mode)}
+      >
+        <Button onClick={() => shareProfile(player.handle, name)}>
+          {navigator.share ? <Share2 /> : <Link2 />}Partager
+        </Button>
+      </PlayerHero>
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <span className="flex size-12 items-center justify-center rounded-full bg-muted text-sm font-medium uppercase">
-              {name.slice(0, 2)}
-            </span>
-            <div>
-              <p className="text-lg font-medium">{name}</p>
-              <p className="text-xs text-muted-foreground">
-                Profil public{updated && ` · Mis à jour le ${updated}`}
-              </p>
-            </div>
-          </div>
-          <Tabs value={mode} onValueChange={setMode}>
-            <TabsList>
-              {MODES.map(m => (
-                <TabsTrigger key={m.id} value={m.id} className="px-2 sm:px-3">
-                  <span className="sm:hidden">{m.short || m.label}</span>
-                  <span className="hidden sm:inline">{m.label}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </div>
+      <Summary mode={mode} prog={prog} />
 
-        <Summary mode={mode} prog={prog} />
+      <SearchField {...searchProps} className="lg:hidden" />
 
-        {catalog.categories.map(c => (
+      <motion.div
+        key={mode}
+        className="space-y-6"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2, ease }}
+      >
+        {sections.map(c => (
           <section key={c.name} className="space-y-3">
             <div className="flex items-center justify-between pb-1">
               <h2 className="text-sm font-medium">{c.name}</h2>
               <span className="text-xs text-muted-foreground tabular-nums">
-                {c.weapons.filter(w => prog[w.id].every(v => v === null || v === 1)).length} / {c.weapons.length}
+                {c.weapons.filter(w => isDone(w.id)).length} / {c.weapons.length}
               </span>
             </div>
             <div className="divide-y overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
-              {c.weapons.map(w => (
-                <WeaponRow
-                  key={w.id}
-                  weapon={w}
-                  arr={prog[w.id]}
-                  cols={cols}
-                  texts={mode === 'prestige' ? null : w[mode]}
-                  open={!!open[mode + ':' + w.id]}
-                  isLocked={noLock}
-                  lockReason={noReason}
-                  onToggle={noop}
-                  onOpen={id => setOpen(o => ({ ...o, [mode + ':' + id]: !o[mode + ':' + id] }))}
-                  readOnly
-                />
+              {c.shown.map(w => (
+                <div key={w.id} id={'w-' + w.id}>
+                  <WeaponRow
+                    weapon={w}
+                    arr={prog[w.id]}
+                    cols={cols}
+                    texts={mode === 'prestige' ? null : w[mode]}
+                    open={!!open[mode + ':' + w.id]}
+                    isLocked={noLock}
+                    lockReason={noReason}
+                    onToggle={noop}
+                    onOpen={toggleOpen}
+                    readOnly
+                  />
+                </div>
               ))}
             </div>
           </section>
         ))}
-      </main>
-    </div>
+        {!sections.length && <p className="py-16 text-center text-muted-foreground">Aucune arme ne correspond.</p>}
+      </motion.div>
+    </CommunityFrame>
   );
 }

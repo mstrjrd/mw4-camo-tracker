@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')).render(
             <Root />
           </CatalogProvider>
         </AuthProvider>
-        <Toaster theme="dark" position="bottom-right" mobileOffset={{ bottom: 80 }} />
+        <Toaster theme="dark" position="bottom-right" mobileOffset={{ bottom: 96 }} />
       </TooltipProvider>
     </MotionConfig>
   </StrictMode>,
