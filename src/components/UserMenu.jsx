@@ -46,7 +46,7 @@ export default function UserMenu({ user, beforeSignOut, onAdmin, onProfile }) {
 
   const signOut = async () => {
     await beforeSignOut?.();
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
     if (error) toast.error('Déconnexion impossible');
   };
 

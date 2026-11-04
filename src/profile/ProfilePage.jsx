@@ -379,7 +379,7 @@ function ProgressSection({ progress, onImport, onReset, currentMode, linkDmz }) 
 export default function ProfilePage({ user, progress, onImport, onReset, currentMode, linkDmz, onBack, beforeSignOut }) {
   const signOut = async () => {
     await beforeSignOut?.();
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
     if (error) toast.error('Déconnexion impossible');
   };
 
