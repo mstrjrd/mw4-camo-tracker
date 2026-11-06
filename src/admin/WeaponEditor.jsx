@@ -32,7 +32,7 @@ export const emptyWeapon = () => ({
   image: null,
   multi: Array.from({ length: 7 }, (_, i) => (i === DV ? DV_TEXT : '')),
   dmz: Array.from({ length: 7 }, (_, i) => (i === DV ? DV_TEXT : '')),
-  warzone: Array(7).fill(''),
+  warzone: Array.from({ length: 7 }, (_, i) => (i === DV ? DV_TEXT : '')),
   prestige: [true, true, true, true],
   mastery: false,
   sortOrder: 0,
@@ -61,7 +61,7 @@ function ChallengeFields({ mode, cols, values, onChange }) {
   return (
     <div className="space-y-3">
       {cols.map((c, i) => {
-        const fixed = i === DV && mode !== 'warzone';
+        const fixed = i === DV;
         return (
           <div key={i} className="space-y-1.5">
             <Label htmlFor={`${mode}-${i}`} className="flex items-center gap-1.5">

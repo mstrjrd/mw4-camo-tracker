@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { OR, PL, RH, DV, UNLOCK_THRESHOLD } from './constants';
+import { OR, PL, RH, DV, UNLOCK_THRESHOLD, progressKey } from './constants';
 import { useCatalog } from './catalog';
 
 const UI_KEY = 'mw4-ui-v1'; // per-browser UI prefs (current tab, filters, opened cards)
-// Guest (not signed-in) progress, kept only in this browser. Offered for import after login.
-const LOCAL_KEY = 'mw4-camo-tracker-v1';
+// Guest (not signed-in) progress, kept in sessionStorage: it survives a reload, and the browser erases it
+// when the tab or the browser is closed. Offered for import after login in the same tab.
+const GUEST_KEY = 'mw4-camo-tracker-v1';
+// Older versions kept it in localStorage: remove what is left there
+try { localStorage.removeItem(GUEST_KEY); } catch {}
 const SAVE_DELAY = 700;
-// Index of the first mastery camo (Or / Golden Damascus); the 3 before it are the Spéciales
+// Index of the first mastery camo (Or); the 3 before it are the Spéciales
 const MASTERY_START = 3;
 
 const fit = (arr, n, avail) =>
@@ -25,6 +28,7 @@ export function normalizeProgress(saved, weapons) {
     warzone: { ...(saved?.warzone || {}) },
     prestige: { ...(saved?.prestige || {}) },
     linkDmz: true,
+    linkWarzone: true,
   };
   for (const w of weapons) {
     out.multi[w.id] = fit(saved?.multi?.[w.id], 7);
@@ -34,6 +38,7 @@ export function normalizeProgress(saved, weapons) {
   }
   const link = saved?.linkDmz ?? saved?.settings?.linkDmz;
   if (typeof link === 'boolean') out.linkDmz = link;
+  if (typeof saved?.linkWarzone === 'boolean') out.linkWarzone = saved.linkWarzone;
   return out;
 }
 
@@ -41,19 +46,23 @@ function readJSON(key) {
   try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
 }
 
+function readGuest() {
+  try { return JSON.parse(sessionStorage.getItem(GUEST_KEY)); } catch { return null; }
+}
+
 function loadUi() {
   return { mode: 'multi', hideDone: false, open: {}, ...(readJSON(UI_KEY) || {}) };
 }
 
 function legacyProgress() {
-  const saved = readJSON(LOCAL_KEY);
+  const saved = readGuest();
   if (!saved) return null;
   const any = ['multi', 'dmz', 'warzone', 'prestige'].some(k =>
     Object.values(saved[k] || {}).some(a => Array.isArray(a) && a.some(v => v === 1 || v === true)));
   return any ? saved : null;
 }
 
-/** userId = null → guest mode: progress lives in localStorage only. */
+/** userId = null → guest mode: progress lives in sessionStorage only. */
 export function useTracker(userId) {
   const { weapons } = useCatalog();
   const [ui, setUi] = useState(loadUi);
@@ -82,7 +91,7 @@ export function useTracker(userId) {
     let cancelled = false;
     dirty.current = false;
     if (!userId) {
-      setProgress(readJSON(LOCAL_KEY) || {});
+      setProgress(readGuest() || {});
       setLegacy(null);
       setStatus('local');
       return;
@@ -111,7 +120,7 @@ export function useTracker(userId) {
     const snapshot = latest.current;
     dirty.current = false;
     if (!userId) {
-      try { localStorage.setItem(LOCAL_KEY, JSON.stringify(snapshot)); } catch {}
+      try { sessionStorage.setItem(GUEST_KEY, JSON.stringify(snapshot)); } catch {}
       return;
     }
     setStatus('saving');
@@ -152,7 +161,8 @@ export function useTracker(userId) {
   // ---- derived ----
   const { mode } = ui;
   const linkDmz = full?.linkDmz ?? true;
-  const progKey = mode === 'dmz' && linkDmz ? 'multi' : mode;
+  const linkWarzone = full?.linkWarzone ?? true;
+  const progKey = progressKey(mode, full);
   const prog = full?.[progKey];
 
   // counts[i] = number of weapons with camo i validated (for the current mode)
@@ -244,6 +254,7 @@ export function useTracker(userId) {
   }, [prog, progKey, isLocked, update]);
 
   const setLinkDmz = useCallback(v => update(p => ({ ...p, linkDmz: v })), [update]);
+  const setLinkWarzone = useCallback(v => update(p => ({ ...p, linkWarzone: v })), [update]);
 
   const setUiValue = useCallback((key, value) => setUi(u => ({ ...u, [key]: value })), []);
 
@@ -259,7 +270,7 @@ export function useTracker(userId) {
     update(p => {
       const keys = target === 'all'
         ? ['multi', 'dmz', 'warzone', 'prestige']
-        : [target === 'dmz' && p.linkDmz ? 'multi' : target]; // linked DMZ shares the Multi progress
+        : [progressKey(target, p)];
       const out = { ...p };
       for (const key of keys) {
         const next = {};
@@ -278,11 +289,13 @@ export function useTracker(userId) {
   }, [legacy, update]);
 
   return {
-    ui, mode, progress: full, prog, linkDmz, status, isLocked, lockReason,
+    ui, mode, progress: full, prog, linkDmz, linkWarzone, status, isLocked, lockReason,
     legacyAvailable: !!legacy,
-    toggle, setLinkDmz, setUiValue, toggleOpen, resetMode, importProgress, importLegacy,
+    toggle, setLinkDmz, setLinkWarzone, setUiValue, toggleOpen, resetMode, importProgress, importLegacy,
     dismissLegacy: () => setLegacy(null),
     retry: () => setReloadKey(k => k + 1),
     flush: save,
+    // The account is gone: unsaved changes have nowhere to go
+    discardPending: () => { dirty.current = false; },
   };
 }

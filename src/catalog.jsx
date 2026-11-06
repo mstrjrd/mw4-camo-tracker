@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import DATA from './data.json';
-import { CAMO_MODES, DV, DV_TEXT, colsFor } from './constants';
+import { CAMO_MODES, CHALLENGE_MODES, DV, DV_TEXT, colsFor } from './constants';
 
 /**
  * Weapon catalog.
@@ -46,7 +46,7 @@ function bundledWeapons() {
       image: null,
       multi: w.multi,
       dmz: w.dmz,
-      warzone: Array(7).fill(''),
+      warzone: pad7(),
       prestige: (DATA.seed.prestige[w.id] || [0, 0, 0, 0]).map(v => v !== null),
       mastery: true,
       sortOrder: (order += 10),
@@ -54,9 +54,9 @@ function bundledWeapons() {
   );
 }
 
-// 7 challenges per mode. Multi/DMZ: the Divergence one (index DV) is always the fixed text.
-const pad7 = (a, fixedDv = true) =>
-  Array.from({ length: 7 }, (_, i) => (fixedDv && i === DV ? DV_TEXT : a?.[i] ?? ''));
+// 7 challenges per mode. The Divergence one (index DV) is always the fixed text.
+const pad7 = a =>
+  Array.from({ length: 7 }, (_, i) => (i === DV ? DV_TEXT : a?.[i] ?? ''));
 
 export const fromRow = r => ({
   id: r.id,
@@ -67,7 +67,7 @@ export const fromRow = r => ({
   image: r.image_url,
   multi: pad7(r.multi),
   dmz: pad7(r.dmz),
-  warzone: pad7(r.warzone, false),
+  warzone: pad7(r.warzone),
   prestige: Array.from({ length: 4 }, (_, i) => r.prestige_available?.[i] ?? true),
   mastery: r.mastery,
   sortOrder: r.sort_order,
@@ -82,7 +82,7 @@ export const toRow = w => ({
   image_url: w.image || null,
   multi: pad7(w.multi).map(s => s.trim()),
   dmz: pad7(w.dmz).map(s => s.trim()),
-  warzone: pad7(w.warzone, false).map(s => s.trim()),
+  warzone: pad7(w.warzone).map(s => s.trim()),
   prestige_available: w.prestige,
   mastery: !!w.mastery,
   sort_order: Number(w.sortOrder) || 0,
@@ -107,14 +107,15 @@ function buildCatalog(weapons) {
 
 /**
  * Camo columns of a mode with the admin overrides applied.
- * overrides = { multi: [{ name, short }, …], dmz: …, warzone: …, prestige: … } (missing / empty → default).
+ * overrides = { multi: [{ name, short }, …], prestige: … } (missing / empty → default).
+ * DMZ and Warzone always use the Multi names, even if older saves still hold names of their own.
  * The color (k) always stays the default one of that position.
  */
 export function applyCamoNames(overrides) {
   const out = {};
   for (const mode of CAMO_MODES) {
     out[mode] = colsFor(mode).map((c, i) => {
-      const o = overrides?.[mode]?.[i];
+      const o = overrides?.[CHALLENGE_MODES.includes(mode) ? 'multi' : mode]?.[i];
       return { ...c, name: o?.name?.trim() || c.name, short: o?.short?.trim() || c.short };
     });
   }

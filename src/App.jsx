@@ -29,8 +29,8 @@ const layoutMove = { duration: 0.3, ease };
 /** user = null → guest mode (progress kept only in this browser). onAuth(tab) opens the login/signup forms. */
 export default function App({ user, onAuth, onAdmin }) {
   const {
-    ui, mode, progress, prog, linkDmz, status, isLocked, lockReason, legacyAvailable,
-    toggle, setLinkDmz, setUiValue, toggleOpen, resetMode, importProgress, importLegacy, dismissLegacy, retry, flush,
+    ui, mode, progress, prog, linkDmz, linkWarzone, status, isLocked, lockReason, legacyAvailable,
+    toggle, setLinkDmz, setLinkWarzone, setUiValue, toggleOpen, resetMode, importProgress, importLegacy, dismissLegacy, retry, flush, discardPending,
   } = useTracker(user?.id ?? null);
   const [search, setSearch] = useState('');
   const [cat, setCat] = useState(ALL);
@@ -67,9 +67,9 @@ export default function App({ user, onAuth, onAdmin }) {
         onImport={importProgress}
         onReset={resetMode}
         currentMode={mode}
-        linkDmz={linkDmz}
         onBack={() => setPage('tracker')}
         beforeSignOut={flush}
+        onAccountDeleted={discardPending}
       />
     );
   }
@@ -139,7 +139,7 @@ export default function App({ user, onAuth, onAdmin }) {
                       <CloudOff className="size-4 shrink-0 text-amber-400" />Progression non sauvegardée
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Elle reste sur ce navigateur et peut être perdue.
+                      Elle sera effacée dès que tu fermeras cet onglet ou ton navigateur.
                       {onAuth && ' Crée un compte pour la retrouver partout : tes camos déjà cochés pourront être importés.'}
                     </p>
                   </div>
@@ -157,7 +157,7 @@ export default function App({ user, onAuth, onAdmin }) {
             <motion.div key="legacy" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }}>
               <Card size="sm" className="ring-primary/40">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2"><HardDriveDownload className="size-4 text-primary" />Progression trouvée sur ce navigateur</CardTitle>
+                  <CardTitle className="flex items-center gap-2"><HardDriveDownload className="size-4 text-primary" />Progression trouvée dans cet onglet</CardTitle>
                   <CardDescription>Tu avais coché des camos sans être connecté. Tu veux les ajouter à ton compte ?</CardDescription>
                   <CardAction className="flex gap-2">
                     <Button size="sm" onClick={() => { importLegacy(); toast.success('Progression importée dans ton compte'); }}>Importer</Button>
@@ -199,6 +199,12 @@ export default function App({ user, onAuth, onAdmin }) {
             <div className="flex items-center gap-2">
               <Switch id="link-dmz" checked={linkDmz} onCheckedChange={setLinkDmz} />
               <Label htmlFor="link-dmz">DMZ lié au Multi</Label>
+            </div>
+          )}
+          {mode === 'warzone' && (
+            <div className="flex items-center gap-2">
+              <Switch id="link-warzone" checked={linkWarzone} onCheckedChange={setLinkWarzone} />
+              <Label htmlFor="link-warzone">Warzone lié au Multi</Label>
             </div>
           )}
         </section>
@@ -275,7 +281,7 @@ export default function App({ user, onAuth, onAdmin }) {
           {user
             ? 'Progression enregistrée dans ton compte et synchronisée sur tous tes appareils.'
             : 'Mode invité : progression non sauvegardée dans un compte.'}{' '}
-          Données issues du Google Sheet « MW4 Camo Tracker », images d'armes : codmunity.gg.
+          Données issues du Google Sheet « MW4 Camo Tracker », images d'armes et de camouflages : codmunity.gg.
         </p>
       </footer>
       <BottomNav label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={v => setUiValue('mode', v)} />

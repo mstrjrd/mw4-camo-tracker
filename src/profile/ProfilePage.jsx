@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, AtSign, Download, ExternalLink, Globe, KeyRound, Link2, Loader2, LogOut, RotateCcw, Save, Upload, UserRound, HardDrive } from 'lucide-react';
+import { ArrowLeft, AtSign, Download, ExternalLink, Globe, KeyRound, Link2, Loader2, LogOut, RotateCcw, Save, Trash2, Upload, UserRound, HardDrive } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,11 +13,11 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase, redirectUrl } from '@/lib/supabase';
 import { Switch } from '@/components/ui/switch';
-import { MODES } from '../constants';
+import { CHALLENGE_MODES, MODES, progressKey } from '../constants';
 import { navigate, profileUrl } from '@/lib/router';
 import { HANDLE_RE, fetchMyProfile, profileErrorMessage, saveMyProfile, suggestHandle, syncDisplayName } from '../community/api';
 import { shareProfile } from '../community/PublicProfilePage';
-import { authErrorMessage, displayName } from '@/auth/AuthProvider';
+import { authErrorMessage, displayName, useAuth } from '@/auth/AuthProvider';
 import { riseItem } from '@/lib/motion';
 import { reserveUsername } from '@/auth/usernames';
 
@@ -271,13 +271,16 @@ function ShareSection({ user }) {
 
 const RESET_TARGETS = [...MODES.map(m => ({ id: m.id, label: m.label })), { id: 'all', label: 'Tout (tous les modes)' }];
 
-function ProgressSection({ progress, onImport, onReset, currentMode, linkDmz }) {
+function ProgressSection({ progress, onImport, onReset, currentMode }) {
   const [pending, setPending] = useState(null); // parsed file waiting for confirmation
   const [resetTarget, setResetTarget] = useState(currentMode || 'multi');
   const [confirmReset, setConfirmReset] = useState(false);
   const targetLabel = RESET_TARGETS.find(t => t.id === resetTarget)?.label;
-  const linkedNote = linkDmz && (resetTarget === 'multi' || resetTarget === 'dmz')
-    ? ' Multi et DMZ sont liés : les deux seront remis à zéro.'
+  // Modes sharing the Multi progress: resetting one of them resets them all
+  const linked = CHALLENGE_MODES.filter(m => progressKey(m, progress) === 'multi');
+  const linkedNames = linked.map(id => MODES.find(m => m.id === id).short || MODES.find(m => m.id === id).label);
+  const linkedNote = linked.length > 1 && linked.includes(resetTarget)
+    ? ` ${linkedNames.slice(0, -1).join(', ')} et ${linkedNames.at(-1)} sont liés : ${linked.length > 2 ? 'les trois' : 'les deux'} seront remis à zéro.`
     : '';
 
   const exportFile = () => {
@@ -375,8 +378,65 @@ function ProgressSection({ progress, onImport, onReset, currentMode, linkDmz }) 
   );
 }
 
-/** Account page: username, email, password, progress export/import. */
-export default function ProfilePage({ user, progress, onImport, onReset, currentMode, linkDmz, onBack, beforeSignOut }) {
+const DELETE_WORD = 'SUPPRIMER';
+
+function DeleteAccountSection({ onDeleted }) {
+  const { isAdmin } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [word, setWord] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const deleteAccount = async () => {
+    setBusy(true);
+    const { error } = await supabase.rpc('delete_my_account');
+    if (error) {
+      setBusy(false);
+      return toast.error(error.code === 'PGRST202'
+        ? "La fonction de suppression n'existe pas : exécute supabase/delete_account.sql."
+        : 'Suppression impossible. Vérifie ta connexion et réessaie.');
+    }
+    onDeleted?.();
+    await supabase.auth.signOut({ scope: 'local' });
+    toast.success('Ton compte a été supprimé');
+  };
+
+  return (
+    <Section
+      icon={Trash2}
+      title="Supprimer mon compte"
+      description="Supprime définitivement ton compte, ta progression et ton profil public. Ton pseudo et ton email redeviennent disponibles."
+    >
+      <Button variant="destructive" onClick={() => setOpen(true)}><Trash2 />Supprimer mon compte</Button>
+
+      <AlertDialog open={open} onOpenChange={o => { if (!busy) { setOpen(o); setWord(''); } }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer définitivement ton compte ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Ta progression et ton profil public seront effacés, sans retour possible.
+              Exporte d'abord ta progression si tu veux en garder une copie.
+              {isAdmin && ' Tu perdras aussi ton accès administrateur.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-1.5">
+            <Label htmlFor="delete-word">Écris {DELETE_WORD} pour confirmer</Label>
+            <Input id="delete-word" value={word} autoComplete="off" onChange={e => setWord(e.target.value)} />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={busy}>Annuler</AlertDialogCancel>
+            {/* Plain button: the dialog must stay open while deleting and if it fails */}
+            <Button variant="destructive" disabled={busy || word.trim().toUpperCase() !== DELETE_WORD} onClick={deleteAccount}>
+              {busy ? <Loader2 className="animate-spin" /> : <Trash2 />}Supprimer
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Section>
+  );
+}
+
+/** Account page: username, email, password, progress export/import, account deletion. */
+export default function ProfilePage({ user, progress, onImport, onReset, currentMode, onBack, beforeSignOut, onAccountDeleted }) {
   const signOut = async () => {
     await beforeSignOut?.();
     const { error } = await supabase.auth.signOut({ scope: 'local' });
@@ -413,7 +473,8 @@ export default function ProfilePage({ user, progress, onImport, onReset, current
         <EmailSection user={user} />
         <PasswordSection user={user} />
         <ShareSection user={user} />
-        <ProgressSection progress={progress} onImport={onImport} onReset={onReset} currentMode={currentMode} linkDmz={linkDmz} />
+        <ProgressSection progress={progress} onImport={onImport} onReset={onReset} currentMode={currentMode} />
+        <DeleteAccountSection onDeleted={onAccountDeleted} />
       </motion.main>
     </div>
   );

@@ -8,17 +8,6 @@ export const CAMOS = [
   { name: 'Divergence', short: 'DV', k: 'dv' },
 ];
 
-// Warzone camo names, from the "API" tab of the Google Sheet
-export const CAMOS_WZ = [
-  { name: 'Spéciale 1', short: 'S1', k: 's' },
-  { name: 'Spéciale 2', short: 'S2', k: 's' },
-  { name: 'Spéciale 3', short: 'S3', k: 's' },
-  { name: 'Golden Damascus', short: 'GD', k: 'or' },
-  { name: 'Starglass', short: 'SG', k: 'sg' },
-  { name: 'Absolute Zero', short: 'AZ', k: 'az' },
-  { name: 'Apocalypse', short: 'AP', k: 'ap' },
-];
-
 export const PRESTIGE = [
   { name: 'Prestige 1', short: 'P1', k: 'p1' },
   { name: 'Prestige 1 max', short: 'P1 max', k: 'p2' },
@@ -40,8 +29,7 @@ export const DV = 6;
 
 /**
  * Fixed number of weapons needed to unlock the last camos, whatever the number of weapons in the catalog:
- * Rupture harmonique needs Platine on 33 weapons, Divergence needs Rupture harmonique on 33 weapons
- * (same for Warzone: Absolute Zero / Apocalypse).
+ * Rupture harmonique needs Platine on 33 weapons, Divergence needs Rupture harmonique on 33 weapons.
  */
 export const UNLOCK_THRESHOLD = 33;
 
@@ -51,8 +39,15 @@ export const DV_TEXT = 'Se débloque après Rupture harmonique sur 33 armes';
 /** Modes with the 7-camo challenge structure (everything except Prestige). */
 export const CHALLENGE_MODES = ['multi', 'dmz', 'warzone'];
 
-/** Default camo columns of a mode. The names shown on the site can be overridden by admins (see catalog.jsx). */
-export const colsFor = mode => (mode === 'prestige' ? PRESTIGE : mode === 'warzone' ? CAMOS_WZ : CAMOS);
+/**
+ * Default camo columns of a mode: Multi, DMZ and Warzone share the same camos.
+ * The names shown on the site can be overridden by admins (see catalog.jsx).
+ */
+export const colsFor = mode => (mode === 'prestige' ? PRESTIGE : CAMOS);
+
+/** Key of the progress a mode reads and writes: a linked DMZ or Warzone shares the Multi progress. */
+export const progressKey = (mode, progress) =>
+  (mode === 'dmz' && progress?.linkDmz) || (mode === 'warzone' && progress?.linkWarzone) ? 'multi' : mode;
 
 /** Every mode that has camo names, in the order shown in the admin. */
 export const CAMO_MODES = ['multi', 'dmz', 'warzone', 'prestige'];

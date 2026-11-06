@@ -25,6 +25,7 @@ Dans Supabase > **SQL Editor**, exécuter une fois, dans cet ordre :
 5. `supabase/seasons.sql` — saison d'arrivée des armes
 6. `supabase/profiles.sql` — profils publics partageables (page Joueurs, `/joueur/<identifiant>`)
 7. `supabase/usernames.sql` — pseudos uniques (vérifiés à l'inscription et au changement de pseudo)
+8. `supabase/delete_account.sql` — suppression de son compte depuis Mon profil
 
 Se déclarer administrateur (avec l'email de son compte sur le site) :
 

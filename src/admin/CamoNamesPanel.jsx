@@ -6,14 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/supabase';
-import { CAMO_MODES, colsFor } from '../constants';
+import { colsFor } from '../constants';
 import { useCatalog } from '../catalog';
 import { dbErrorMessage } from './WeaponEditor';
 
+// Multi, DMZ and Warzone share the same camos: their names are edited once, under 'multi'
+const EDITED_MODES = ['multi', 'prestige'];
+
 const SECTIONS = {
-  multi: { title: 'Multijoueur', desc: 'Camos des défis Multijoueur.' },
-  dmz: { title: 'DMZ', desc: 'Camos des défis DMZ.' },
-  warzone: { title: 'Warzone', desc: 'Camos des défis Warzone.' },
+  multi: { title: 'Multijoueur, DMZ et Warzone', desc: 'Camos communs aux trois modes.' },
   prestige: { title: 'Prestige armes', desc: 'Paliers de prestige des armes.' },
 };
 
@@ -21,7 +22,7 @@ const SHORT_MAX = 6;
 
 // Editable copy: { mode: [{ name, short }, …] } with the current names (overrides or defaults)
 const toDraft = camos =>
-  Object.fromEntries(CAMO_MODES.map(m => [m, camos[m].map(c => ({ name: c.name, short: c.short }))]));
+  Object.fromEntries(EDITED_MODES.map(m => [m, camos[m].map(c => ({ name: c.name, short: c.short }))]));
 
 export default function CamoNamesPanel() {
   const catalog = useCatalog();
@@ -41,7 +42,7 @@ export default function CamoNamesPanel() {
 
   const save = async e => {
     e.preventDefault();
-    for (const mode of CAMO_MODES) {
+    for (const mode of EDITED_MODES) {
       for (const c of draft[mode]) {
         if (!c.name.trim() || !c.short.trim()) {
           return toast.error(`${SECTIONS[mode].title} : chaque camo doit avoir un nom et une abréviation.`);
@@ -50,7 +51,7 @@ export default function CamoNamesPanel() {
     }
     setBusy(true);
     const value = Object.fromEntries(
-      CAMO_MODES.map(m => [m, draft[m].map(c => ({ name: c.name.trim(), short: c.short.trim() }))]),
+      EDITED_MODES.map(m => [m, draft[m].map(c => ({ name: c.name.trim(), short: c.short.trim() }))]),
     );
     const { error } = await supabase
       .from('app_settings')
@@ -79,7 +80,7 @@ export default function CamoNamesPanel() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        {CAMO_MODES.map(mode => (
+        {EDITED_MODES.map(mode => (
           <Card key={mode}>
             <CardHeader>
               <CardTitle>{SECTIONS[mode].title}</CardTitle>

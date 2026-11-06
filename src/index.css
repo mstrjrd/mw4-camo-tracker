@@ -150,8 +150,8 @@
     --camo-s: #5b8def;
     --camo-or: #e6b422;
     --camo-pl: #b9d4e6;
-    --camo-rh: #c04bff;
-    --camo-dv: linear-gradient(90deg, #ff4d6d, #ffb347, #7cff6b, #4dd2ff, #b06bff);
+    --camo-rh: #d3193c;
+    --camo-dv: linear-gradient(90deg, #6f737a, #f2f4f7, #6f737a, #f2f4f7, #6f737a);
 }
 
 /* Color dots (legend, summary, challenge list) */
@@ -166,13 +166,14 @@
 .dot.k-p3 { background: linear-gradient(135deg, #a65cff, #ff4f8b); }
 .dot.k-p4 { background: linear-gradient(135deg, #ff4f8b, #ffa63f); }
 
-/* Camo toggle buttons: each kind sets --c (color), --fill (owned gradient), --ink (text on fill).
+/* Camo toggle buttons: each kind sets --c (color), --fill (owned gradient or image), --ink (text on fill),
+   --halo (optional text shadow keeping the label readable on an image).
    Color is the reward: not yet validated = neutral tile with a small mark in the camo's color. */
 .camo.k-s  { --c: #5b8def; --fill: linear-gradient(135deg, #9dbcff, #3e6fd8 60%, #2a4f9e); --ink: #fff; }
-.camo.k-or { --c: #e6b422; --fill: linear-gradient(135deg, #fff1a8, #e6b422 45%, #a87a0c); --ink: #2b1d00; }
-.camo.k-pl { --c: #b9d4e6; --fill: linear-gradient(135deg, #ffffff, #c9dceb 45%, #7f9fb5); --ink: #14202a; }
-.camo.k-rh { --c: #c04bff; --fill: linear-gradient(135deg, #f0a6ff, #c04bff 50%, #5e17a8); --ink: #fff; }
-.camo.k-dv { --c: #ff6b9a; --fill: var(--camo-dv); --ink: #1a1020; }
+.camo.k-or { --c: #e6b422; --fill: url('/camos/or.webp') center / cover; --ink: #2b1d00; --halo: 0 0 3px rgba(255,255,255,.7); }
+.camo.k-pl { --c: #b9d4e6; --fill: linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.3)), url('/camos/pl.webp') center / cover; --ink: #14202a; --halo: 0 0 3px rgba(255,255,255,.8); }
+.camo.k-rh { --c: var(--camo-rh); --fill: url('/camos/rh.webp') center / cover; --ink: #fff; --halo: 0 1px 2px rgba(0,0,0,.9); }
+.camo.k-dv { --c: #c8ccd2; --fill: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)), url('/camos/dv.webp') center / cover; --ink: #fff; --halo: 0 0 3px #000, 0 1px 2px #000; }
 .camo.k-p1 { --c: #3fd6c6; --fill: linear-gradient(135deg, #8ff5ea, #3fd6c6 40%, #4f8dff); --ink: #06221f; }
 .camo.k-p2 { --c: #4f8dff; --fill: linear-gradient(135deg, #a9c8ff, #4f8dff 40%, #a65cff); --ink: #fff; }
 .camo.k-p3 { --c: #a65cff; --fill: linear-gradient(135deg, #d6b0ff, #a65cff 40%, #ff4f8b); --ink: #fff; }
@@ -203,6 +204,7 @@
 .camo[data-state="on"]:hover:not(:disabled):not([aria-disabled]) {
     background: var(--fill);
     color: var(--ink);
+    text-shadow: var(--halo, none);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
 }
 .camo[data-state="on"]::after { display: none; }
@@ -217,11 +219,3 @@
 }
 
 .weapon-img img { filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
-
-/* Warzone camos */
-.dot.k-sg { background: linear-gradient(135deg, #9fe8ff, #c8b6ff); }
-.dot.k-az { background: #4fc3ff; }
-.dot.k-ap { background: linear-gradient(135deg, #ff3b2f, #ff9a3c); }
-.camo.k-sg { --c: #a9c8ff; --fill: linear-gradient(135deg, #e6f7ff, #9fe8ff 35%, #c8b6ff 70%, #7f8cff); --ink: #10142a; }
-.camo.k-az { --c: #4fc3ff; --fill: linear-gradient(135deg, #e0f7ff, #4fc3ff 50%, #1769aa); --ink: #04192a; }
-.camo.k-ap { --c: #ff5a3c; --fill: linear-gradient(135deg, #ffd27a, #ff5a3c 45%, #8a0f0f); --ink: #fff; }

@@ -1,3 +1,4 @@
+import { progressKey } from '../constants';
 import { normalizeProgress } from '../useTracker';
 
 export const playerName = p => p.display_name || p.handle;
@@ -6,10 +7,9 @@ export const formatPct = n => `${n.toLocaleString('fr-FR')} %`;
 /** Camo indexes shown as counts on the public pages. */
 export const highlightCamos = mode => (mode === 'prestige' ? [0, 1, 2, 3] : [3, 4, 5, 6]);
 
-/** Progress of a mode for a saved progress object (handles the Multi/DMZ link). */
+/** Progress of a mode for a saved progress object (handles the links to Multi). */
 export function modeProgress(full, mode) {
-  const key = mode === 'dmz' && full.linkDmz ? 'multi' : mode;
-  return full[key];
+  return full[progressKey(mode, full)];
 }
 
 /**
