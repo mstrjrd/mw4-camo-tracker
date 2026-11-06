@@ -148,9 +148,10 @@ export default function WeaponEditor({ open, weapon, onOpenChange }) {
     setUploading(true);
     const ext = file.name.split('.').pop()?.toLowerCase() || 'png';
     const path = `${id || 'arme'}-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: true });
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file, { contentType: file.type });
     setUploading(false);
-    if (error) return toast.error(dbErrorMessage(error));
+    // The admin page is only reachable by admins, so an RLS refusal here points to the bucket policies.
+    if (error) return toast.error(/row-level security/i.test(error.message) ? "Envoi refusé par le stockage : exécute supabase/admin.sql en entier (règles du bucket 'weapon-images')." : dbErrorMessage(error));
     set('image', supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl);
     toast.success('Image envoyée');
   };
