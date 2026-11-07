@@ -8,7 +8,6 @@
   },
   "scripts": {
     "dev": "vite --host --port 5180",
-    "dev:mobile": "vite --host --port 5180",
     "build": "vite build",
     "preview": "vite preview"
   },

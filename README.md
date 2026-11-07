@@ -10,8 +10,7 @@ Comptes joueurs (progression synchronisée), mode invité, et administration (ar
 ```bash
 npm install
 cp .env.example .env   # puis remplir l'URL et la clé anon Supabase
-npm run dev            # http://localhost:5173
-npm run dev:mobile     # accessible depuis le téléphone sur le même Wi-Fi (port 5180)
+npm run dev            # port 5180, accessible depuis le téléphone sur le même Wi-Fi
 ```
 
 ## Base de données Supabase
