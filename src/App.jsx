@@ -17,7 +17,7 @@ import WeaponRow from './components/WeaponRow';
 import UserMenu, { SyncStatus } from './components/UserMenu';
 import ProfilePage from './profile/ProfilePage';
 import BottomNav, { MODE_ITEMS } from './components/BottomNav';
-import IconRail from './components/IconRail';
+import IconRail, { EXTERNAL_LINKS } from './components/IconRail';
 import SearchField from './components/SearchField';
 import WeaponHero from './components/WeaponHero';
 import SidePanel from './components/SidePanel';
@@ -98,7 +98,7 @@ export default function App({ user, onAuth, onAdmin }) {
 
   return (
     <div className="min-h-svh lg:pl-20">
-      <IconRail label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={v => setUiValue('mode', v)} onHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+      <IconRail label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={v => setUiValue('mode', v)} links={EXTERNAL_LINKS} onHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
       <header className="sticky top-0 z-20 bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 flex-1 items-center gap-3">

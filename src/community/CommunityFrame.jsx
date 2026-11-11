@@ -2,7 +2,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { navigate } from '@/lib/router';
 import BottomNav, { MODE_ITEMS } from '../components/BottomNav';
-import IconRail from '../components/IconRail';
+import IconRail, { EXTERNAL_LINKS } from '../components/IconRail';
 import Logo from '../components/Logo';
 import SearchField from '../components/SearchField';
 
@@ -16,7 +16,7 @@ const goHome = () => navigate('/');
 export default function CommunityFrame({ title, mode, onMode, search, actions, aside, footer, children }) {
   return (
     <div className="min-h-svh lg:pl-20">
-      <IconRail label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={onMode} onHome={goHome} />
+      <IconRail label="Modes de jeu" items={MODE_ITEMS} value={mode} onChange={onMode} links={EXTERNAL_LINKS} onHome={goHome} />
       <header className="sticky top-0 z-20 bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 flex-1 items-center gap-3">
